@@ -43,11 +43,16 @@ int main(void)
 
 Instead of calling free() 3 times for each variable, you only need to call a single function once.
 
+You can learn more about the available functions in the wiki section.
+[List of functions](https://codeberg.org/Racer911-1/Arena/wiki/Functions.md)
+
 ## Roadmap
 
 Adding more functions.
 
 Adding more Unit tests.
+
+Updating the Wiki page.
 
 ## Contributing
 
