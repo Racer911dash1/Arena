@@ -96,6 +96,26 @@ void test_arena_malloc_varying_sizes_ten()
 	arena_destroy(&arena);
 }
 
+void test_arena_malloc_pointer_comparison()
+{
+	t_arena arena;
+	char *ptr1;
+	char *ptr2;
+
+	arena_build(&arena);
+	ptr1 = arena_malloc(&arena, 4 * sizeof(char));
+	ptr2 = arena_malloc(&arena, 4 * sizeof(char));
+	if (ptr1 == ptr2)
+	{
+		fprintf(stderr, RED "KO " RESET);
+	}
+	else
+	{
+		fprintf(stdout, GREEN "OK " RESET);
+	}
+	arena_destroy(&arena);
+}
+
 int main(void)
 {
 	test_arena_malloc_zero_bytes();
@@ -105,5 +125,6 @@ int main(void)
 	test_arena_malloc_buffer_size_plus_one_one();
 	test_arena_malloc_buffer_size_plus_one_ten();
 	test_arena_malloc_varying_sizes_ten();
+	test_arena_malloc_pointer_comparison();
 	printf("\n");
 }

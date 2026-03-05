@@ -64,9 +64,54 @@ void test_arena_strsplit_collapse_basic(void)
 	arena_destroy(&arena);
 }
 
+void test_arena_strsplit_collapse_empty_string(void)
+{
+	t_arena arena;
+	char **split;
+	char *compare[] = {NULL};
+	char *str = "";
+	char *delimiters = " ";
+
+	arena_build(&arena);
+	split = arena_strsplit_collapse(&arena, str, delimiters);
+	test_arena_print_check_strtrim(split, compare);
+	arena_destroy(&arena);
+}
+
+void test_arena_strsplit_collapse_only_delimiters(void)
+{
+	t_arena arena;
+	char **split;
+	char *compare[] = {NULL};
+	char *str = "   ,,, ";
+	char *delimiters = " ,";
+
+	arena_build(&arena);
+	split = arena_strsplit_collapse(&arena, str, delimiters);
+	test_arena_print_check_strtrim(split, compare);
+	arena_destroy(&arena);
+}
+
+void test_arena_strsplit_collapse_single_word(void)
+{
+	t_arena arena;
+	char **split;
+	char *compare[] = {"HelloWorld", NULL};
+	char *str = "HelloWorld";
+	char *delimiters = " ,";
+
+	arena_build(&arena);
+	split = arena_strsplit_collapse(&arena, str, delimiters);
+	test_arena_print_check_strtrim(split, compare);
+	arena_destroy(&arena);
+}
+
 int main(void)
 {
 	test_arena_strsplit_collapse_simple();
 	test_arena_strsplit_collapse_basic();
+	test_arena_strsplit_collapse_empty_string();
+	test_arena_strsplit_collapse_only_delimiters();
+	test_arena_strsplit_collapse_single_word();
 	printf("\n");
 }

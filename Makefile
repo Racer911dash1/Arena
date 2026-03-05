@@ -4,19 +4,19 @@ NAME := arena.a
 # Archive
 AR := ar rcs
 
-# Compiler and Flags
-CC			:= cc
-CFLAGS		:= -Wall -Werror -Wextra
-CFLAGS		+= -MMD -MP -g
-INCLUDES	:= -I include
-MAKEFLAGS	+= --no-print-directory
-
 # Directories
 SRCDIR		:= src/
 OBJDIR		:= obj/
 INCDIR		:= include/
-TESTDIR		:= UnitTest/
-TESTOBJDIR	:= obj_test/
+TESTDIR		:= tests/
+TESTOBJDIR	:= $(TESTDIR)obj_test/
+
+# Compiler and Flags
+CC			:= cc
+CFLAGS		:= -Wall -Werror -Wextra
+CFLAGS		+= -MMD -MP -g
+INCLUDES	:= -I $(INCDIR)
+MAKEFLAGS	+= --no-print-directory
 
 # Sources
 SRCS :=	arena_calloc.c \
@@ -55,7 +55,7 @@ $(NAME): $(OBJS) Makefile
 	@echo $(GREEN)Library $(NAME) compiled$(RESET)
 
 clean:
-	@rm -rf $(OBJDIR) $(TESTOBJDIR) *.test
+	@rm -rf $(OBJDIR) $(TESTOBJDIR) $(TESTDIR)*.test
 	@echo $(GREEN)$(NAME) object files cleaned$(RESET)
 
 fclean: clean
@@ -65,16 +65,16 @@ fclean: clean
 re:	fclean all
 
 TESTPATH := $(addprefix $(TESTDIR),$(TESTSRCS))
-OBJS_TEST := $(patsubst $(TESTDIR)%,$(TESTOBJDIR)%,$(TESTPATH:.c=.o))
+.SECONDARY: OBJS_TEST := $(patsubst $(TESTDIR)%,$(TESTOBJDIR)%,$(TESTPATH:.c=.o))
 DEPS_TEST := $(OBJS_TEST:.o=.d)
 
-TESTEXES := $(TESTSRCS:.c=.test)
+TESTEXES := $(addprefix $(TESTDIR), $(TESTSRCS:.c=.test))
 
 $(TESTOBJDIR)%.o: $(TESTDIR)%.c Makefile | $(TESTOBJDIR)
 	@echo $(BLUE)Compiling $@$(RESET)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-$(TESTEXES): %.test: $(TESTOBJDIR)%.o $(NAME)
+$(TESTDIR)%.test: $(TESTOBJDIR)%.o $(NAME)
 	@echo $(PURPLE)Linking $@$(RESET)
 	@$(CC) $(CFLAGS) $< $(NAME) -o $@
 
