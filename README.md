@@ -6,17 +6,25 @@ Arena is a C library for streamlining memory allocation while minimizing acciden
 
 ## Installation
 
-Download the .zip and unzip it in the library directory of your project.
+Here's the bare minimum amount of steps needed.
+```console
+$> git clone https://codeberg.org/Racer911-1/Arena.git
+$> cd Arena
+$> make all
+$> make install
+```
 
 This project uses Make to compile the library with the following rules.
 
-`make all`: Compile the library to create a static libary `arena.a` file.
+`make all`: Compile the library to create a static libary `arena.a` and a shared object `arena.so.X.X.X` file.
 
-`make clean`: Remove all object and dependency files, but keep the static library.
+`make install`: Copy the headers and libraries to their respective directories inside /usr/local (or similar). May require sudo permissions.
 
-`make fclean`: Remove all object and dependecy files, including the static library.
+`make uninstall`: Remove the headers and libraries copied from the installment. May require sudo permissions.
 
-`make re`: Recompile the library. Same as calling `make fclean` and then `make all`.
+`make clean`: Remove all object and dependency files, but keep the static library and shared object library.
+
+`make fclean`: Remove all object and dependecy files, including the static library and shared object library.
 
 `make test`: Run unit tests for all functions.
 
@@ -24,7 +32,7 @@ This project uses Make to compile the library with the following rules.
 
 Take this simple example
 ```c
-#include "arena.h"
+#include "arena/arena.h"
 
 int main(void)
 {
@@ -44,7 +52,7 @@ int main(void)
 Instead of calling free() 3 times for each variable, you only need to call a single function once.
 
 You can learn more about the available functions in the wiki section.
-[List of functions](https://codeberg.org/Racer911-1/Arena/wiki/Functions.md)
+[List of functions](https://codeberg.org/Racer911-1/Arena/wiki/Home)
 
 ## Roadmap
 
