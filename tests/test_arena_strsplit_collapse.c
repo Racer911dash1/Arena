@@ -106,6 +106,20 @@ void test_arena_strsplit_collapse_single_word(void)
 	arena_destroy(&arena);
 }
 
+void test_arena_strsplit_collapse_no_delimiter(void)
+{
+	t_arena arena;
+	char **split;
+	char *compare[] = {":Hello World,how.are!you?doing;", NULL};
+	char *str = ":Hello World,how.are!you?doing;";
+	char *delimiters = "";
+
+	arena_build(&arena);
+	split = arena_strsplit_collapse(&arena, str, delimiters);
+	test_arena_print_check_strtrim(split, compare);
+	arena_destroy(&arena);
+}
+
 int main(void)
 {
 	test_arena_strsplit_collapse_simple();
@@ -113,5 +127,6 @@ int main(void)
 	test_arena_strsplit_collapse_empty_string();
 	test_arena_strsplit_collapse_only_delimiters();
 	test_arena_strsplit_collapse_single_word();
+	test_arena_strsplit_collapse_no_delimiter();
 	printf("\n");
 }

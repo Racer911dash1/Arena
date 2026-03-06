@@ -60,7 +60,7 @@ char **arena_strsplit_preserve(t_arena *arena, const char *str, const char *deli
 
 	size_t word_count = count_words(str, delimiter);
 	size_t length;
-	char **ptr = arena_calloc(arena, word_count + 1, sizeof(char *));
+	char **ptr = arena_malloc(arena, (word_count + 1) * sizeof(char *));
 
 	if (ptr == NULL)
 	{
@@ -69,13 +69,15 @@ char **arena_strsplit_preserve(t_arena *arena, const char *str, const char *deli
 	for (size_t word = 0; word < word_count; word += 1)
 	{
 		length = word_length(str, delimiter);
-		ptr[word] = arena_calloc(arena, length + 1, sizeof(char));
+		ptr[word] = arena_malloc(arena, (length + 1) * sizeof(char));
 		if (ptr[word] == NULL)
 		{
 			return (NULL);
 		}
+		ptr[word][length] = '\0';
 		memcpy(ptr[word], str, length);
 		next_word(&str, delimiter);
 	}
+	ptr[word_count] = NULL;
 	return (ptr);
 }

@@ -10,7 +10,7 @@
 # include <assert.h>
 
 # ifndef ARENA_BUFFER_SIZE
-#  define ARENA_BUFFER_SIZE 64
+#  define ARENA_BUFFER_SIZE 4096
 # endif
 
 typedef struct s_arena_node t_arena_node;
@@ -35,7 +35,7 @@ typedef struct s_arena
  *
  * This function should be called first when declaring an arena variable.
  *
- * @param arena Pointer to the arena freshly declared arena.
+ * @param arena Pointer to the freshly declared arena.
  */
 void arena_build(t_arena *arena);
 

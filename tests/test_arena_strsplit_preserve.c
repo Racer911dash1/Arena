@@ -95,6 +95,34 @@ void test_arena_strsplit_preserve_empty_string(void)
 	arena_destroy(&arena);
 }
 
+void test_arena_strsplit_preserve_no_delimiter(void)
+{
+	t_arena arena;
+	char **split;
+	char *compare[] = {":Hello World,how.are!you?doing;", NULL};
+	char *str = ":Hello World,how.are!you?doing;";
+	char *delimiters = "";
+
+	arena_build(&arena);
+	split = arena_strsplit_preserve(&arena, str, delimiters);
+	test_arena_print_check_strsplit_preserve(split, compare);
+	arena_destroy(&arena);
+}
+
+void test_arena_strsplit_preserve_all_delimiter(void)
+{
+	t_arena arena;
+	char **split;
+	char *compare[] = {"", "", "", "", "", "", "", "", NULL};
+	char *str = "abcdefg";
+	char *delimiters = "abcdefg";
+
+	arena_build(&arena);
+	split = arena_strsplit_preserve(&arena, str, delimiters);
+	test_arena_print_check_strsplit_preserve(split, compare);
+	arena_destroy(&arena);
+}
+
 int main(void)
 {
 	test_arena_strsplit_preserve_simple();
@@ -102,5 +130,7 @@ int main(void)
 	test_arena_strsplit_preserve_consecutive();
 	test_arena_strsplit_preserve_leading_delimiter();
 	test_arena_strsplit_preserve_empty_string();
+	test_arena_strsplit_preserve_no_delimiter();
+	test_arena_strsplit_preserve_all_delimiter();
 	printf("\n");
 }

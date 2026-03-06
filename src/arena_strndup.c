@@ -14,10 +14,11 @@ char *arena_strndup(t_arena *arena, const char *str, size_t num)
 	{
 		num = len;
 	}
-	ptr = arena_calloc(arena, num + 1, sizeof(char));
+	ptr = arena_malloc(arena, (num + 1) * sizeof(char));
 	if (ptr == NULL)
 	{
 		return (NULL);
 	}
+	ptr[num] = '\0';
 	return (memcpy(ptr, str, num));
 }

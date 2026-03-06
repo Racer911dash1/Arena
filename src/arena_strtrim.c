@@ -25,10 +25,11 @@ char *arena_strtrim(t_arena *arena, char const *str, char const *set)
 	{
 		end -= 1;
 	}
-	trim = arena_calloc(arena, end - start + 1, sizeof(char));
+	trim = arena_malloc(arena, end - (start + 1) * sizeof(char));
 	if (trim == NULL)
 	{
 		return (NULL);
 	}
+	trim[end - start] = '\0';
 	return (memcpy(trim, str + start, end - start));
 }
