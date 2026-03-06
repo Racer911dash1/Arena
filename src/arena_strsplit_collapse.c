@@ -1,11 +1,15 @@
 #include "arena.h"
 
+/**
+ * The first if condition only counts up when it's no longer on a delimiter,
+ * even if the delimters are repeating.
+ */
 static size_t count_words(const char *str, const char *delimiter)
 {
 	size_t word_count = 0;
 	bool is_word = false;
 
-	for (size_t idx = 0; str[idx]; idx++)
+	for (size_t idx = 0; str[idx]; idx += 1)
 	{
 		if (is_word == false && strchr(delimiter, str[idx]) == NULL)
 		{
@@ -20,6 +24,10 @@ static size_t count_words(const char *str, const char *delimiter)
 	return (word_count);
 }
 
+/**
+ * Counts the length of the word until strchr finds a delimiter or a null byte, after which
+ * the length of the word has been determined.
+ */
 static size_t word_length(const char *str, const char *delimiter)
 {
 	size_t idx = 0;
@@ -31,6 +39,9 @@ static size_t word_length(const char *str, const char *delimiter)
 	return (idx);
 }
 
+/**
+ * Move the pointer of `str` if it's not on a delimiter.
+ */
 static void skip_delimiters(const char **str, const char *delimiter)
 {
 	while (**str && strchr(delimiter, **str))
@@ -40,13 +51,8 @@ static void skip_delimiters(const char **str, const char *delimiter)
 }
 
 /**
- * @brief Split `str` into multiple strings matching `delimiter`.
- *
- * Delimiters at the start and end of `str` will be omitted.
- * Repeating delimiters will be collapsed into a single delimiter.
- *
- * @retval Pointer to the split string on success.
- * @retval `NULL` on malloc failure.
+ * The main loop has a pattern of: find the next word -> copy word to array -> move pointer to the end of the copied word -> repeat.
+ * Do that until all words have been copied.
  */
 char **arena_strsplit_collapse(t_arena *arena, const char *str, const char *delimiter)
 {
@@ -60,7 +66,7 @@ char **arena_strsplit_collapse(t_arena *arena, const char *str, const char *deli
 	{
 		return (NULL);
 	}
-	for (size_t word = 0; word < word_count; word++)
+	for (size_t word = 0; word < word_count; word += 1)
 	{
 		skip_delimiters(&str, delimiter);
 		length = word_length(str, delimiter);

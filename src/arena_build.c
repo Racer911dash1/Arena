@@ -1,9 +1,8 @@
 #include "arena.h"
 
 /**
- * @brief Initialize the arena.
- *
- * This should be the first function to call.
+ * It's a necessary step to initialize the arena before its first use
+ * as uninitialized values may segfault the program.
  */
 void arena_build(t_arena *arena)
 {

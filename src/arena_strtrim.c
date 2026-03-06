@@ -1,12 +1,8 @@
 #include "arena.h"
 
 /**
- * @brief Trim the start and end of `str` matching `set`.
- *
- * If `set` contains all characters of `str`, and empty string will be returned.
- *
- * @retval Pointer to the trimmed string on success.
- * @retval `NULL` on malloc failure.
+ * Moving through `str` one character at a time until no matching character is found.
+ * Then the same is repeated from the end of `str`.
  */
 char *arena_strtrim(t_arena *arena, char const *str, char const *set)
 {

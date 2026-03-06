@@ -18,7 +18,7 @@ void test_arena_print_check_strsplit_collapse_null(char **split)
 void test_arena_print_check_strtrim(char **split, char **compare)
 {
 	size_t idx;
-	for (idx = 0; compare[idx]; idx++)
+	for (idx = 0; compare[idx]; idx += 1)
 	{
 		if (strcmp(split[idx], compare[idx]) != 0)
 		{

@@ -47,7 +47,7 @@ void test_arena_destroy_many_alloc()
 	t_arena arena;
 
 	arena_build(&arena);
-	for (size_t i = 0; i < 10; i++)
+	for (size_t i = 0; i < 10; i += 1)
 	{
 		arena_malloc(&arena, ARENA_BUFFER_SIZE + 1);
 	}

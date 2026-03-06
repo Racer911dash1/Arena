@@ -1,9 +1,8 @@
 #include "arena.h"
 
 /**
- * @brief Free all allocated memory of `arena`
- *
- * This function should be called in the same scope that the variable is declared in.
+ * Looping through the entire linked list and free each node, then setting
+ * head and tail to NULL, allowing the same arena to be reused.
  */
 void arena_destroy(t_arena *arena)
 {

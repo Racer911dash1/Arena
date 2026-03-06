@@ -54,6 +54,23 @@ Instead of calling free() 3 times for each variable, you only need to call a sin
 You can learn more about the available functions in the wiki section.
 [List of functions](https://codeberg.org/Racer911-1/Arena/wiki/Home)
 
+## Uninstalling
+
+Go to the directory where you've cloned this repository and run.
+```console
+$> make uninstall
+```
+If successful the output should look like this
+```console
+Removing arena from /usr/local
+Removing /usr/local/include/arena (if empty)
+Removing /usr/local/lib/arena.a
+Removing /usr/local/lib/arena.so.1.0.0
+Removing /usr/local/lib/arena.so
+Removing /usr/local/lib/arena.so.1
+Removing /usr/local/lib (if empty)
+```
+
 ## Roadmap
 
 Adding more functions.

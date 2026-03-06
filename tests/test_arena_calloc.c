@@ -51,7 +51,7 @@ void test_arena_calloc_buffer_size_ten()
 	t_arena arena;
 
 	arena_build(&arena);
-	for (size_t i = 0; i < 10; i++)
+	for (size_t i = 0; i < 10; i += 1)
 	{
 		arena_calloc(&arena, 1, ARENA_BUFFER_SIZE);
 	}
@@ -74,7 +74,7 @@ void test_arena_calloc_buffer_size_plus_one_ten()
 	t_arena arena;
 
 	arena_build(&arena);
-	for (size_t i = 0; i < 10; i++)
+	for (size_t i = 0; i < 10; i += 1)
 	{
 		arena_calloc(&arena, 1, ARENA_BUFFER_SIZE + 1);
 	}
@@ -88,7 +88,7 @@ void test_arena_calloc_varying_sizes_ten()
 	srand(time(NULL));
 
 	arena_build(&arena);
-	for (size_t i = 0; i < 10; i++)
+	for (size_t i = 0; i < 10; i += 1)
 	{
 		arena_calloc(&arena, 1, rand() % ARENA_BUFFER_SIZE + 1);
 	}

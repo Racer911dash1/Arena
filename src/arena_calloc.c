@@ -1,7 +1,7 @@
 #include "arena.h"
 
 /**
- * @brief Similar to standard `calloc()`.
+ * The else if statement checks whether `num * size` will overflow.
  */
 void *arena_calloc(t_arena *arena, size_t num, size_t size)
 {
@@ -9,8 +9,7 @@ void *arena_calloc(t_arena *arena, size_t num, size_t size)
 
 	if (num == 0 || size == 0)
 	{
-		ptr = arena_malloc(arena, 1);
-		return (memset(ptr, 0, 1));
+		return (arena_malloc(arena, 0));
 	}
 	else if (size > SIZE_MAX / num)
 	{

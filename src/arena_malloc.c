@@ -1,9 +1,9 @@
 #include "arena.h"
 
 /**
- * Round `size` up to the nearest multiple of `ARENA_BUFFER_SIZE`.
- *
- * Throws a compiler error if `ARENA_BUFFER_SIZE` is not a multiple of two.
+ * Using a static assert to ensure that `ARENA_BUFFER_SIZE` is equal to the power of two.
+ * Otherwise the return value will not work as intended.
+ * It basically rounds up `size` to the nearest multiple of `ARENA_BUFFER_SIZE`
  */
 static size_t arena_size_calculate(size_t size)
 {
@@ -20,6 +20,11 @@ static size_t arena_align_up(size_t size, size_t align)
 	return ((size + align - 1) & ~(align - 1));
 }
 
+/**
+ * Make a new node where the memory gets stored.
+ * Since t_arena_node has a flexible array member we can immediately allocate
+ * the approapriate size of the node.
+ */
 static t_arena_node *arena_llist_new(size_t size)
 {
 	t_arena_node *node = malloc(sizeof(*node) + size);
@@ -35,7 +40,8 @@ static t_arena_node *arena_llist_new(size_t size)
 }
 
 /**
- * @brief Similar to standard `malloc()`.
+ * Align the requested size before determining how many bytes to allocate.
+ * The else if statement checks if there's enough unused bytes in the allocated block.
  */
 void *arena_malloc(t_arena *arena, size_t size)
 {

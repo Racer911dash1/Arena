@@ -1,8 +1,5 @@
 #include "arena.h"
 
-/**
- * @brief Similar to standard `strdup()`.
- */
 char *arena_strdup(t_arena *arena, const char *str)
 {
 	assert(str != NULL && "arena_strdup cannot be NULL");

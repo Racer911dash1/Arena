@@ -1,34 +1,42 @@
 #include "arena.h"
 
+/**
+ * Techincally we're counting delimiters here. But doing that easily determines
+ * the amount of words to split.
+ */
 static size_t count_words(const char *str, const char *delimiter)
 {
-	size_t word_count;
-	size_t idx;
+	size_t word_count = 1;
 
-	word_count = 1;
-	idx = 0;
-	while (str[idx])
+	for (size_t idx = 0; str[idx]; idx += 1)
 	{
 		if (strchr(delimiter, str[idx]))
 		{
 			word_count += 1;
 		}
-		idx += 1;
 	}
 	return (word_count);
 }
 
+/**
+ * Counts the length of the word until strchr finds a delimiter or a null byte, after which
+ * the length of the word has been determined.
+ */
 static size_t word_length(const char *str, const char *delimiter)
 {
-	size_t length = 0;
+	size_t idx = 0;
 
-	while (str[length] && strchr(delimiter, str[length]) == NULL)
+	while (str[idx] && strchr(delimiter, str[idx]) == NULL)
 	{
-		length += 1;
+		idx += 1;
 	}
-	return (length);
+	return (idx);
 }
 
+/**
+ * Move the pointer of `str` until the end of the current word, then once more.
+ * This is because it will guarantee that repeating delimiters will be accounted for.
+ */
 static void next_word(const char **str, const char *delimiter)
 {
 	while (**str && strchr(delimiter, **str) == NULL)
@@ -42,13 +50,9 @@ static void next_word(const char **str, const char *delimiter)
 }
 
 /**
- * @brief Split `str` into multiple strings matching `delimiter`.
- *
- * Delimiters at the start and end of `str` will be treated as empty strings.
- * Repeating delimiters will be preserved and create empty strings as a result.
- *
- * @retval Pointer to the split string on success.
- * @retval `NULL` on malloc failure.
+ * Regarding the main loop: Regardless whether `str` starts with a delimiter or
+ * not, it will always be counted as a word. From there on the pointer gets
+ * moved to the next delimiter and repeats the process.
  */
 char **arena_strsplit_preserve(t_arena *arena, const char *str, const char *delimiter)
 {
@@ -62,7 +66,7 @@ char **arena_strsplit_preserve(t_arena *arena, const char *str, const char *deli
 	{
 		return (NULL);
 	}
-	for (size_t word = 0; word < word_count; word++)
+	for (size_t word = 0; word < word_count; word += 1)
 	{
 		length = word_length(str, delimiter);
 		ptr[word] = arena_calloc(arena, length + 1, sizeof(char));
