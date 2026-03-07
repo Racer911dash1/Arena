@@ -16,6 +16,8 @@ $> make install
 
 This project uses Make to compile the library with the following rules.
 
+`make help`: Show all Makefile rules.
+
 `make all`: Compile the library to create a static libary `arena.a` and a shared object `arena.so.X.X.X` file.
 
 `make install`: Copy the headers and libraries to their respective directories inside /usr/local (or similar). May require sudo permissions.
