@@ -4,6 +4,29 @@ All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
+## [1.1.0] - 2026-03-07
+
+### Added
+
+- Added new functions:
+	- arena_substr
+		- Create a substring from another string.
+	- arena_strjoin
+		- Create a new string by joining two strings together.
+
+- Added a new Makefile rule:
+	- help
+		- Prints out all rules and what each one does.
+		- Currently set as the default, so running make without a target operand will run this rule.
+
+### Changed
+
+- Changed a variable modifier to be consistent with the rest of the codebase.
+
+### Fixed
+
+- Fixed Doxygen errors.
+
 ## [1.0.1] - 2026-03-06
 
 ### Added

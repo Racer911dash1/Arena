@@ -4,7 +4,7 @@
  * Moving through `str` one character at a time until no matching character is found.
  * Then the same is repeated from the end of `str`.
  */
-char *arena_strtrim(t_arena *arena, char const *str, char const *set)
+char *arena_strtrim(t_arena *arena, const char *str, const char *set)
 {
 	assert(str != NULL && set != NULL && "arena_strtrim cannot be NULL");
 

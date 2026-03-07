@@ -1,6 +1,6 @@
 # Project Name
 PROJECT	:= arena
-VERSION	:= 1.0.1
+VERSION	:= 1.1.0
 PREFIX	?= /usr/local
 
 # Directories
@@ -17,8 +17,10 @@ SRCS :=	arena_calloc.c \
 		arena_strsplit_collapse.c \
 		arena_strsplit_preserve.c \
 		arena_strdup.c \
+		arena_strjoin.c \
 		arena_strndup.c \
 		arena_strtrim.c \
+		arena_substr.c \
 
 SRCPATH	:= $(addprefix $(SRCDIR)/,$(SRCS))
 OBJS	:= $(patsubst $(SRCDIR)/%,$(OBJDIR)/%,$(SRCPATH:.c=.o))
@@ -48,8 +50,13 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c Makefile | $(OBJDIR)
 	@echo $(BLUE)Compiling $@$(RESET)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
+
+.PHONY: help
+help: ## Show all Makefile rules.
+	@grep -h '\s##\s' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf ""$(CYAN)"  %-20s"$(RESET)" %s\n", $$1, $$2}'
+
 .PHONY: all
-all: $(STATIC_LIB) $(SHARED_LIB)
+all: $(STATIC_LIB) $(SHARED_LIB) ## Compile the library to create a static libary arena.a and a shared object arena.so.X.X.X file.
 
 $(STATIC_LIB): $(OBJS) Makefile
 	@$(AR) $(ARFLAGS) $(STATIC_LIB) $(OBJS)
@@ -65,7 +72,7 @@ $(OBJDIR):
 HEADERS := $(wildcard include/$(PROJECT)/*.h) $(wildcard include/*.h)
 
 .PHONY: install
-install:
+install: ## Copy the headers and libraries to their respective directories inside /usr/local (or similar). May require sudo permissions.
 	@echo $(YELLOW)Installing $(PROJECT) in $(PREFIX)$(RESET)
 	@echo $(GREEN)Creating $(DESTDIR)$(INCDIR) and $(DESTDIR)$(LIBDIR)$(RESET)
 	@mkdir -p $(DESTDIR)$(INCDIR) $(DESTDIR)$(LIBDIR)
@@ -85,7 +92,7 @@ install:
 	@echo $(GREEN)Installation complete$(RESET)
 
 .PHONY: uninstall
-uninstall:
+uninstall: ## Remove the headers and libraries copied from the installment. May require sudo permissions.
 	@echo $(BRIGHT_RED)Removing $(PROJECT) from $(PREFIX)$(RESET)
 	@rm -f $(DESTDIR)$(INCDIR)/*.h
 	@echo $(BRIGHT_RED)Removing $(DESTDIR)$(INCDIR)$(RESET) \(if empty\)
@@ -102,13 +109,13 @@ uninstall:
 	@rmdir --ignore-fail-on-non-empty $(DESTDIR)$(LIBDIR)
 
 .PHONY: clean
-clean:
+clean: ## Remove all object and dependency files, but keep the static library and shared object library.
 	@echo $(BRIGHT_RED)Removing $(OBJDIR) $(TESTOBJDIR) $(TESTDIR)*.test$(RESET)
 	@rm -rf $(OBJDIR) $(TESTOBJDIR) $(TESTDIR)*.test
 	@echo $(BRIGHT_RED)Objects cleaned$(RESET)
 
 .PHONY: fclean
-fclean: clean
+fclean: clean ## Remove all object and dependecy files, including the static library and shared object library.
 	@echo $(BRIGHT_RED)Removing $(STATIC_LIB) $(SHARED_LIB)$(RESET)
 	@rm -f $(STATIC_LIB) $(SHARED_LIB)
 	@echo $(BRIGHT_RED)$(PROJECT) cleaned$(RESET)
@@ -124,8 +131,10 @@ TESTSRCS :=	test_arena_build.c \
 			test_arena_strsplit_collapse.c \
 			test_arena_strsplit_preserve.c \
 			test_arena_strdup.c \
+			test_arena_strjoin.c \
 			test_arena_strndup.c \
 			test_arena_strtrim.c \
+			test_arena_substr.c \
 
 TESTPATH := $(addprefix $(TESTDIR),$(TESTSRCS))
 .SECONDARY: OBJS_TEST := $(patsubst $(TESTDIR)%,$(TESTOBJDIR)%,$(TESTPATH:.c=.o))
@@ -141,7 +150,7 @@ $(TESTDIR)%.test: $(TESTOBJDIR)%.o $(STATIC_LIB)
 	@$(CC) $(CFLAGS) $< $(STATIC_LIB) -o $@
 
 .PHONY: test
-test: all $(TESTEXES)
+test: all $(TESTEXES) ## Run unit tests for all functions.
 	@for unit_test in $(TESTEXES); do \
 		echo $(BRIGHT_BLUE)Testing $$unit_test$(RESET); \
 		./$$unit_test; \
@@ -154,16 +163,16 @@ $(TESTOBJDIR):
 -include $(DEPS_TEST)
 
 # Colors
-BLACK	:= "\e[0;30m"
-RED		:= "\e[0;31m"
-GREEN	:= "\e[0;32m"
-YELLOW	:= "\e[0;33m"
-BLUE	:= "\e[0;34m"
-PURPLE	:= "\e[0;35m"
-CYAN	:= "\e[0;36m"
-WHITE	:= "\e[0;37m"
+BLACK	:= "\033[0;30m"
+RED		:= "\033[0;31m"
+GREEN	:= "\033[0;32m"
+YELLOW	:= "\033[0;33m"
+BLUE	:= "\033[0;34m"
+PURPLE	:= "\033[0;35m"
+CYAN	:= "\033[0;36m"
+WHITE	:= "\033[0;37m"
 
-BRIGHT_RED	:= "\e[0;91m"
-BRIGHT_BLUE	:= "\e[0;94m"
+BRIGHT_RED	:= "\033[0;91m"
+BRIGHT_BLUE	:= "\033[0;94m"
 
-RESET	:= "\e[0m"
+RESET	:= "\033[0m"

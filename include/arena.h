@@ -89,11 +89,23 @@ void *arena_malloc(t_arena *arena, size_t size);
 char *arena_strdup(t_arena *arena, const char *str);
 
 /**
+ * @brief Join two strings together into one.
+ *
+ * @param arena Stores the returning pointer.
+ * @param leftstr The prefix of the new string.
+ * @param rightstr The suffix of the new string.
+ *
+ * @retval Pointer from the result of both strings joined together on success.
+ * @retval NULL on malloc failure.
+ */
+char *arena_strjoin(t_arena *arena, const char *leftstr, const char *rightstr);
+
+/**
  * @brief Duplicate at most `num` bytes of `str` to a new pointer.
  *
  * If `num` is smaller than the length of `str`, only `num` bytes are copied,
  * with a null byte added at the end.
- * If `num` is larger than the lenght of `str`, then `num` will be clamped to the
+ * If `num` is larger than the length of `str`, then `num` will be clamped to the
  * length of `str`.
  *
  * @param arena Stores the returning pointer.
@@ -117,7 +129,7 @@ char *arena_strndup(t_arena *arena, const char *str, size_t num);
  * @param delimiter A string of delimiters as the splitting point.
  *
  * @retval Pointer to the split string on success.
- * @retval `NULL` on malloc failure.
+ * @retval NULL on malloc failure.
  */
 char **arena_strsplit_collapse(t_arena *arena, const char *str, const char *delimiter);
 
@@ -133,7 +145,7 @@ char **arena_strsplit_collapse(t_arena *arena, const char *str, const char *deli
  * @param delimiter A string of delimiters as the splitting point.
  *
  * @retval Pointer to the split string on success.
- * @retval `NULL` on malloc failure.
+ * @retval NULL on malloc failure.
  */
 char **arena_strsplit_preserve(t_arena *arena, const char *str, const char *delimiter);
 
@@ -148,8 +160,25 @@ char **arena_strsplit_preserve(t_arena *arena, const char *str, const char *deli
  * @param set Set of characters to trim.
  *
  * @retval Pointer to the trimmed string on success.
- * @retval `NULL` on malloc failure.
+ * @retval NULL on malloc failure.
  */
-char *arena_strtrim(t_arena *arena, char const *str, char const *set);
+char *arena_strtrim(t_arena *arena, const char *str, const char *set);
+
+/**
+ * @brief Create a substring from `str` starting at `start` with at most `length` characters.
+ *
+ * An empty string will be returned if `start` is larger than the length of `str` or
+ * length is 0.
+ * The length of substring will be clamped up until the null byte of `str`.
+ *
+ * @param arena Stores the returning pointer.
+ * @param str The string to create the substring from.
+ * @param start The starting index to create the new string from.
+ * @param length The length of the new string.
+ *
+ * @retval Pointer to the substring on success.
+ * @retval NULL on malloc failure.
+ */
+char *arena_substr(t_arena *arena, const char *str, size_t start, size_t length);
 
 #endif /* ARENA_H */
