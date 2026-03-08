@@ -1,4 +1,5 @@
 #include "arena.h"
+#include <stdbool.h>
 
 /**
  * The first if condition only counts up when it's no longer on a delimiter,

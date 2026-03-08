@@ -1,17 +1,8 @@
 #ifndef ARENA_H
 # define ARENA_H
 
-# include <stdlib.h>
-# include <stddef.h>
-# include <stdalign.h>
-# include <stdbool.h>
-# include <stdint.h>
 # include <string.h>
 # include <assert.h>
-
-# ifndef ARENA_BUFFER_SIZE
-#  define ARENA_BUFFER_SIZE 4096
-# endif
 
 typedef struct s_arena_node t_arena_node;
 typedef struct s_arena t_arena;

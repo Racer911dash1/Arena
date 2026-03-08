@@ -1,4 +1,5 @@
 #include "arena.h"
+#include <stdint.h>
 
 /**
  * The else if statement checks whether `num * size` will overflow.

@@ -1,6 +1,6 @@
 # Project Name
 PROJECT	:= arena
-VERSION	:= 1.1.0
+VERSION	:= 1.1.1
 PREFIX	?= /usr/local
 
 # Directories
@@ -124,6 +124,8 @@ fclean: clean ## Remove all object and dependecy files, including the static lib
 TESTDIR		:= tests/
 TESTOBJDIR	:= $(TESTDIR)obj_test/
 
+TESTCFLAGS	:= $(CFLAGS) -fsanitize=address
+
 TESTSRCS :=	test_arena_build.c \
 			test_arena_calloc.c \
 			test_arena_destroy.c \
@@ -137,17 +139,17 @@ TESTSRCS :=	test_arena_build.c \
 			test_arena_substr.c \
 
 TESTPATH := $(addprefix $(TESTDIR),$(TESTSRCS))
-.SECONDARY: OBJS_TEST := $(patsubst $(TESTDIR)%,$(TESTOBJDIR)%,$(TESTPATH:.c=.o))
-DEPS_TEST := $(OBJS_TEST:.o=.d)
+.SECONDARY: TESTOBJS := $(patsubst $(TESTDIR)%,$(TESTOBJDIR)%,$(TESTPATH:.c=.o))
+TESTDEPS := $(TESTOBJS:.o=.d)
 TESTEXES := $(addprefix $(TESTDIR), $(TESTSRCS:.c=.test))
 
 $(TESTOBJDIR)%.o: $(TESTDIR)%.c Makefile | $(TESTOBJDIR)
 	@echo $(BLUE)Compiling $@$(RESET)
-	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	@$(CC) $(TESTCFLAGS) $(INCLUDES) -c $< -o $@
 
 $(TESTDIR)%.test: $(TESTOBJDIR)%.o $(STATIC_LIB)
 	@echo $(PURPLE)Linking $@$(RESET)
-	@$(CC) $(CFLAGS) $< $(STATIC_LIB) -o $@
+	@$(CC) $(TESTCFLAGS) $< $(STATIC_LIB) -o $@
 
 .PHONY: test
 test: all $(TESTEXES) ## Run unit tests for all functions.
@@ -160,7 +162,7 @@ $(TESTOBJDIR):
 	@mkdir -p $@
 
 -include $(DEPS)
--include $(DEPS_TEST)
+-include $(TESTDEPS)
 
 # Colors
 BLACK	:= "\033[0;30m"

@@ -2,7 +2,8 @@
 
 All notable changes to this project will be documented in this file.
 
-This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
+This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
@@ -17,6 +18,23 @@ Everything under the Unreleased section are planned features, but may not be gua
 		- Return a single line from the specified file descriptor, returning the following line in the next function call.
 	- arena_strgenerate
 		- Return a randomly generated ascii string of specified characters with specified length.
+
+
+## [1.1.1] - 2026-03-08
+
+### Added
+
+- Added -fsanitize=address for the unit tests to check for memory leaks.
+
+### Changed
+
+- Replaced the hardcoded ARENA_BUFFER_SIZE with sysconf(_SC_PAGESIZE).
+- Moved most headers to the files that actually need them.
+- arena_calloc checks are more thorough by actually checking if the allocated range is initialized to 0.
+
+### Removed
+
+- Unnecessary header inclusions in the unit tests.
 
 ## [1.1.0] - 2026-03-07
 

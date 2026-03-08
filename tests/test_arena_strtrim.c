@@ -1,7 +1,7 @@
 #include "arena.h"
 #include "colors.h"
-#include <assert.h>
 #include <stdio.h>
+#include <unistd.h>
 
 void test_arena_print_check_strtrim(char *trim, char *compare)
 {

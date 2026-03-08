@@ -1,4 +1,5 @@
 #include "arena.h"
+#include <stdlib.h>
 
 /**
  * Looping through the entire linked list and free each node, then setting

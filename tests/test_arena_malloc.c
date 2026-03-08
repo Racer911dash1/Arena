@@ -1,8 +1,9 @@
 #include "arena.h"
 #include "colors.h"
-#include <assert.h>
 #include <stdio.h>
 #include <time.h>
+#include <unistd.h>
+#include <stdlib.h>
 
 void test_arena_print_check_not_null(t_arena *arena)
 {
@@ -41,7 +42,7 @@ void test_arena_malloc_buffer_size_one()
 	t_arena arena;
 
 	arena_build(&arena);
-	arena_malloc(&arena, ARENA_BUFFER_SIZE);
+	arena_malloc(&arena, sysconf(_SC_PAGESIZE));
 	test_arena_print_check_not_null(&arena);
 	arena_destroy(&arena);
 }
@@ -53,7 +54,7 @@ void test_arena_malloc_buffer_size_ten()
 	arena_build(&arena);
 	for (size_t i = 0; i < 10; i += 1)
 	{
-		arena_malloc(&arena, ARENA_BUFFER_SIZE);
+		arena_malloc(&arena, sysconf(_SC_PAGESIZE));
 	}
 	test_arena_print_check_not_null(&arena);
 	arena_destroy(&arena);
@@ -64,7 +65,7 @@ void test_arena_malloc_buffer_size_plus_one_one()
 	t_arena arena;
 
 	arena_build(&arena);
-	arena_malloc(&arena, ARENA_BUFFER_SIZE + 1);
+	arena_malloc(&arena, sysconf(_SC_PAGESIZE) + 1);
 	test_arena_print_check_not_null(&arena);
 	arena_destroy(&arena);
 }
@@ -76,7 +77,7 @@ void test_arena_malloc_buffer_size_plus_one_ten()
 	arena_build(&arena);
 	for (size_t i = 0; i < 10; i += 1)
 	{
-		arena_malloc(&arena, ARENA_BUFFER_SIZE + 1);
+		arena_malloc(&arena, sysconf(_SC_PAGESIZE) + 1);
 	}
 	test_arena_print_check_not_null(&arena);
 	arena_destroy(&arena);
@@ -90,7 +91,7 @@ void test_arena_malloc_varying_sizes_ten()
 	arena_build(&arena);
 	for (size_t i = 0; i < 10; i += 1)
 	{
-		arena_malloc(&arena, rand() % ARENA_BUFFER_SIZE + 1);
+		arena_malloc(&arena, rand() % sysconf(_SC_PAGESIZE) + 1);
 	}
 	test_arena_print_check_not_null(&arena);
 	arena_destroy(&arena);

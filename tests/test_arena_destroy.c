@@ -1,7 +1,7 @@
 #include "arena.h"
 #include "colors.h"
-#include <assert.h>
 #include <stdio.h>
+#include <unistd.h>
 
 void test_arena_print_check_null(t_arena *arena)
 {
@@ -49,7 +49,7 @@ void test_arena_destroy_many_alloc()
 	arena_build(&arena);
 	for (size_t i = 0; i < 10; i += 1)
 	{
-		arena_malloc(&arena, ARENA_BUFFER_SIZE + 1);
+		arena_malloc(&arena, sysconf(_SC_PAGESIZE) + 1);
 	}
 	arena_destroy(&arena);
 	test_arena_print_check_null(&arena);

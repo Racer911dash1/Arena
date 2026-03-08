@@ -1,15 +1,18 @@
 #include "arena.h"
+#include <unistd.h>
+#include <stdalign.h>
+#include <stddef.h>
+#include <stdlib.h>
 
 /**
- * Using a static assert to ensure that `ARENA_BUFFER_SIZE` is equal to the power of two.
- * Otherwise the return value will not work as intended.
- * It basically rounds up `size` to the nearest multiple of `ARENA_BUFFER_SIZE`
+ * Get the system configuration for a page size, should always be a power of two.
+ * Rounds `size` up  to the nearest multiple of the page size.
  */
 static size_t arena_size_calculate(size_t size)
 {
-	_Static_assert((ARENA_BUFFER_SIZE & (ARENA_BUFFER_SIZE - 1)) == 0,
-		"ARENA_BUFFER_SIZE must be a power of two\n");
-	return ((size + ARENA_BUFFER_SIZE - 1) & ~(ARENA_BUFFER_SIZE - 1));
+	const long page_size = sysconf(_SC_PAGESIZE);
+
+	return ((size + page_size - 1) & ~(page_size - 1));
 }
 
 /**
