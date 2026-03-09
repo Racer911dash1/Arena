@@ -5,7 +5,7 @@
  */
 char *arena_strjoin(t_arena *arena, const char *leftstr, const char *rightstr)
 {
-	assert(leftstr != NULL && rightstr != NULL && "arena_strjoin cannot be NULL");
+	assert(arena != NULL && leftstr != NULL && rightstr != NULL && "arena_strjoin cannot be NULL");
 
 	const size_t leftstrlen = strlen(leftstr);
 	const size_t rightstrlen = strlen(rightstr);

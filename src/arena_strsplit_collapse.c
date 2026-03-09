@@ -57,7 +57,7 @@ static void skip_delimiters(const char **str, const char *delimiter)
  */
 char **arena_strsplit_collapse(t_arena *arena, const char *str, const char *delimiter)
 {
-	assert(str != NULL && delimiter != NULL && "arena_strsplit_collapse cannot be NULL");
+	assert(arena != NULL && str != NULL && delimiter != NULL && "arena_strsplit_collapse cannot be NULL");
 
 	size_t word_count = count_words(str, delimiter);
 	size_t length;

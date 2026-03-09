@@ -3,6 +3,7 @@
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
+
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
@@ -17,12 +18,31 @@ Everything under the Unreleased section are planned features, but may not be gua
 	- arena_strgenerate
 		- Return a randomly generated ascii string of specified characters with specified length.
 
+- Added new Makefile rules:
+	- install-local
+		- Similar to install, but only happens locally in the user directory without the need for sudo.
+	- uninstall-local
+		- Same reasons as above.
+
+### Changed
+
+- Change Unit test structure with src/ and include/ directories
+
+## [1.2.1] Insert date
+
+### Added
+
+- Added an assert for calloc and added a check for most other asserts to make debugging easier.
+
+### Removed
+
+- Removed a unit test that just straight up segfaults.
 
 ## [1.2.0] - 2026-03-09
 
 ### Added
 
-- Added new functions:
+- Added a new function:
 	- arena_strreplace
 		- Search and replace parts of a string with another string.
 

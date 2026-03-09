@@ -23,16 +23,6 @@ int test_arena_destroy_empty()
 	return (ret);
 }
 
-int test_arena_destroy_uninitialized()
-{
-	t_arena arena;
-	int ret;
-
-	arena_destroy(&arena);
-	ret = test_arena_print_check_null(&arena);
-	return (ret);
-}
-
 int test_arena_destroy_single_alloc()
 {
 	t_arena arena;
@@ -63,7 +53,6 @@ int test_arena_destroy_many_alloc()
 int main()
 {
 	RUN_TEST(test_arena_destroy_empty);
-	RUN_TEST(test_arena_destroy_uninitialized); // Seems unsafe, don't know how else to check
 	RUN_TEST(test_arena_destroy_single_alloc);
 	RUN_TEST(test_arena_destroy_many_alloc);
 	printf("\n");

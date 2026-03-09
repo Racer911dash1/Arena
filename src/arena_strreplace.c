@@ -61,7 +61,7 @@ static void arena_replace_match(char *new_str, const char *str, const char *sear
  */
 char *arena_strreplace(t_arena *arena, const char *str, const char *search, const char *replace)
 {
-	assert(search != NULL && replace != NULL && "arena_strreplace cannot be NULL");
+	assert(arena != NULL && search != NULL && replace != NULL && "arena_strreplace cannot be NULL");
 
 	char *new_str;
 	size_t match_count;

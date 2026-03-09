@@ -6,7 +6,7 @@
  */
 char *arena_strtrim(t_arena *arena, const char *str, const char *set)
 {
-	assert(str != NULL && set != NULL && "arena_strtrim cannot be NULL");
+	assert(arena != NULL && str != NULL && set != NULL && "arena_strtrim cannot be NULL");
 
 	size_t start = 0;
 	size_t end;

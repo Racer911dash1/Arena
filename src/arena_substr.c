@@ -6,7 +6,7 @@
  */
 char *arena_substr(t_arena *arena, const char *str, size_t start, size_t length)
 {
-	assert(str != NULL && "arena_substr cannot be NULL");
+	assert(arena != NULL && str != NULL && "arena_substr cannot be NULL");
 
 	char *substr;
 	size_t str_len = strlen(str);

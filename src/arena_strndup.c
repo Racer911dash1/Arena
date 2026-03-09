@@ -5,7 +5,7 @@
  */
 char *arena_strndup(t_arena *arena, const char *str, size_t num)
 {
-	assert(str != NULL && "arena_strndup cannot be NULL");
+	assert(arena != NULL && str != NULL && "arena_strndup cannot be NULL");
 
 	const size_t len = strlen(str);
 	char *ptr;

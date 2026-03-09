@@ -6,6 +6,8 @@
  */
 void *arena_calloc(t_arena *arena, size_t num, size_t size)
 {
+	assert(arena != NULL && "arena_calloc cannot be NULL");
+
 	void *ptr;
 
 	if (num == 0 || size == 0)
