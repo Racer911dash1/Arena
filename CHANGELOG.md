@@ -28,7 +28,7 @@ Everything under the Unreleased section are planned features, but may not be gua
 
 - Change Unit test structure with src/ and include/ directories
 
-## [1.2.1] Insert date
+## [1.2.1] - 2026-03-09
 
 ### Added
 
