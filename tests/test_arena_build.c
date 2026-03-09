@@ -1,30 +1,29 @@
-#include "arena.h"
-#include "colors.h"
-#include <stdio.h>
-#include <unistd.h>
+#include "test_arena.h"
 
-void test_arena_print_check_null(t_arena *arena)
+int test_arena_print_check_null(t_arena *arena)
 {
 	if (arena->head != NULL || arena->tail != NULL)
 	{
-		fprintf(stderr, RED "KO " RESET);
+		return (EXIT_FAILURE);
 	}
 	else
 	{
-		fprintf(stdout, GREEN "OK " RESET);
+		return (EXIT_SUCCESS);
 	}
 }
 
-void test_arena_build_init(void)
+int test_arena_build_init()
 {
 	t_arena arena;
+	int ret;
 
 	arena_build(&arena);
-	test_arena_print_check_null(&arena);
+	ret = test_arena_print_check_null(&arena);
+	return (ret);
 }
 
-int main(void)
+int main()
 {
-	test_arena_build_init();
+	RUN_TEST(test_arena_build_init);
 	printf("\n");
 }

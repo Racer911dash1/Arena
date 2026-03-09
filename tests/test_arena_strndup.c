@@ -1,87 +1,93 @@
-#include "arena.h"
-#include "colors.h"
-#include <stdio.h>
-#include <string.h>
-#include <unistd.h>
+#include "test_arena.h"
 
-void test_arena_print_check_strndup(char *dup, char *compare)
+int test_arena_compare_strndup(char *dup, char *compare)
 {
 	if (strcmp(dup, compare) == 0)
 	{
-		fprintf(stdout, GREEN "OK " RESET);
+		return (EXIT_SUCCESS);
 	}
 	else
 	{
-		fprintf(stderr, RED "KO " RESET);
+		return (EXIT_FAILURE);
 	}
 }
 
-void test_arena_strndup_normal(void)
+int test_arena_strndup_normal()
 {
 	t_arena arena;
+	int ret;
 	char *dup;
 	char *str = "Hello World";
 
 	arena_build(&arena);
 	dup = arena_strndup(&arena, str, 5);
-	test_arena_print_check_strndup(dup, "Hello");
+	ret = test_arena_compare_strndup(dup, "Hello");
 	arena_destroy(&arena);
+	return (ret);
 }
 
-void test_arena_strndup_exact_length(void)
+int test_arena_strndup_exact_length()
 {
 	t_arena arena;
+	int ret;
 	char *dup;
 	char *str = "Hello";
 
 	arena_build(&arena);
 	dup = arena_strndup(&arena, str, 5);
-	test_arena_print_check_strndup(dup, "Hello");
+	ret = test_arena_compare_strndup(dup, "Hello");
 	arena_destroy(&arena);
+	return (ret);
 }
 
-void test_arena_strndup_longer_than_string(void)
+int test_arena_strndup_longer_than_string()
 {
 	t_arena arena;
+	int ret;
 	char *dup;
 	char *str = "Hi";
 
 	arena_build(&arena);
 	dup = arena_strndup(&arena, str, 100);
-	test_arena_print_check_strndup(dup, "Hi");
+	ret = test_arena_compare_strndup(dup, "Hi");
 	arena_destroy(&arena);
+	return (ret);
 }
 
-void test_arena_strndup_zero_length(void)
+int test_arena_strndup_zero_length()
 {
 	t_arena arena;
+	int ret;
 	char *dup;
 	char *str = "Hello";
 
 	arena_build(&arena);
 	dup = arena_strndup(&arena, str, 0);
-	test_arena_print_check_strndup(dup, "");
+	ret = test_arena_compare_strndup(dup, "");
 	arena_destroy(&arena);
+	return (ret);
 }
 
-void test_arena_strndup_single_char(void)
+int test_arena_strndup_single_char()
 {
 	t_arena arena;
+	int ret;
 	char *dup;
 	char *str = "Hello World";
 
 	arena_build(&arena);
 	dup = arena_strndup(&arena, str, 1);
-	test_arena_print_check_strndup(dup, "H");
+	ret = test_arena_compare_strndup(dup, "H");
 	arena_destroy(&arena);
+	return (ret);
 }
 
-int main(void)
+int main()
 {
-	test_arena_strndup_normal();
-	test_arena_strndup_exact_length();
-	test_arena_strndup_longer_than_string();
-	test_arena_strndup_zero_length();
-	test_arena_strndup_single_char();
+	RUN_TEST(test_arena_strndup_normal);
+	RUN_TEST(test_arena_strndup_exact_length);
+	RUN_TEST(test_arena_strndup_longer_than_string);
+	RUN_TEST(test_arena_strndup_zero_length);
+	RUN_TEST(test_arena_strndup_single_char);
 	printf("\n");
 }

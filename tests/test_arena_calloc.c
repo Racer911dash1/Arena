@@ -1,57 +1,65 @@
-#include "arena.h"
-#include "colors.h"
-#include <unistd.h>
-#include <stdio.h>
+#include "test_arena.h"
 #include <time.h>
-#include <stdlib.h>
 
-void test_arena_print_check_not_null(t_arena *arena)
+int test_arena_check_not_null(t_arena *arena)
 {
 	if (arena->head != NULL && arena->tail != NULL)
 	{
-		fprintf(stdout, GREEN "OK " RESET);
+		return (EXIT_SUCCESS);
 	}
 	else
 	{
-		fprintf(stderr, RED "KO " RESET);
+		return (EXIT_FAILURE);
 	}
 }
 
-void test_arena_calloc_zero_bytes()
+int test_arena_range_is_zero_bytes(char *ptr, size_t size)
+{
+	for (size_t i = 0; i < size; i += 1)
+	{
+		if (ptr[i] != '\0')
+		{
+			return (EXIT_FAILURE);
+		}
+	}
+	return (EXIT_SUCCESS);
+}
+
+int test_arena_calloc_zero_bytes()
 {
 	t_arena arena;
+	int ret;
 
 	arena_build(&arena);
 	arena_calloc(&arena, 0, 0);
-	test_arena_print_check_not_null(&arena);
+	ret = test_arena_check_not_null(&arena);
 	arena_destroy(&arena);
+	return (ret);
 }
 
-void test_arena_calloc_one_byte()
+int test_arena_calloc_one_byte()
 {
 	t_arena arena;
+	int ret;
+	size_t size;
 	char *ptr;
 
 	arena_build(&arena);
-	ptr = arena_calloc(&arena, 1, 1);
+	size = 1;
+	ptr = arena_calloc(&arena, 1, size);
 	if (ptr == NULL)
 	{
-		fprintf(stderr, RED "KO " RESET);
+		return (EXIT_FAILURE);
 	}
-	if (*ptr == '\0')
-	{
-		fprintf(stdout, GREEN "OK " RESET);
-	}
-	else
-	{
-		fprintf(stderr, RED "KO " RESET);
-	}
+	ret = test_arena_range_is_zero_bytes(ptr, size);
 	arena_destroy(&arena);
+	return (ret);
 }
 
-void test_arena_calloc_buffer_size_one()
+int test_arena_calloc_buffer_size_one()
 {
 	t_arena arena;
+	int ret;
 	size_t size;
 	char *ptr;
 
@@ -60,23 +68,17 @@ void test_arena_calloc_buffer_size_one()
 	ptr = arena_calloc(&arena, 1, size);
 	if (ptr == NULL)
 	{
-		fprintf(stderr, RED "KO " RESET);
+		return (EXIT_FAILURE);
 	}
-	for (size_t i = 0; i < size; i += 1)
-	{
-		if (ptr[i] != '\0')
-		{
-			fprintf(stderr, RED "KO " RESET);
-			return;
-		}
-	}
-	test_arena_print_check_not_null(&arena);
+	ret = test_arena_range_is_zero_bytes(ptr, size);
 	arena_destroy(&arena);
+	return (ret);
 }
 
-void test_arena_calloc_buffer_size_ten()
+int test_arena_calloc_buffer_size_ten()
 {
 	t_arena arena;
+	int ret;
 	size_t size;
 	char *ptr;
 
@@ -84,27 +86,26 @@ void test_arena_calloc_buffer_size_ten()
 	size = sysconf(_SC_PAGESIZE);
 	for (size_t i = 0; i < 10; i += 1)
 	{
-		ptr = arena_calloc(&arena, 1, sysconf(_SC_PAGESIZE));
+		ptr = arena_calloc(&arena, 1, size);
 		if (ptr == NULL)
 		{
-			fprintf(stderr, RED "KO " RESET);
+			ret = EXIT_FAILURE;
+			break;
 		}
-		for (size_t ii = 0; ii < size; ii += 1)
+		ret = test_arena_range_is_zero_bytes(ptr, size);
+		if (ret == EXIT_FAILURE)
 		{
-			if (ptr[ii] != '\0')
-			{
-				fprintf(stderr, RED "KO " RESET);
-				return;
-			}
+			break;
 		}
 	}
-	test_arena_print_check_not_null(&arena);
 	arena_destroy(&arena);
+	return (ret);
 }
 
-void test_arena_calloc_buffer_size_plus_one_one()
+int test_arena_calloc_buffer_size_plus_one_one()
 {
 	t_arena arena;
+	int ret;
 	size_t size;
 	char *ptr;
 
@@ -113,53 +114,44 @@ void test_arena_calloc_buffer_size_plus_one_one()
 	ptr = arena_calloc(&arena, 1, size);
 	if (ptr == NULL)
 	{
-		fprintf(stderr, RED "KO " RESET);
-		return;
+		return (EXIT_FAILURE);
 	}
-	for (size_t i = 0; i < size; i += 1)
-	{
-		if (ptr[i] != '\0')
-		{
-			fprintf(stderr, RED "KO " RESET);
-			return;
-		}
-	}
-	fprintf(stdout, GREEN "OK " RESET);
+	ret = test_arena_range_is_zero_bytes(ptr, size);
 	arena_destroy(&arena);
+	return (ret);
 }
 
-void test_arena_calloc_buffer_size_plus_one_ten()
+int test_arena_calloc_buffer_size_plus_one_ten()
 {
 	t_arena arena;
+	int ret;
 	size_t size;
 	char *ptr;
 
 	arena_build(&arena);
+	size = sysconf(_SC_PAGESIZE) + 1;
 	for (size_t i = 0; i < 10; i += 1)
 	{
-		size = sysconf(_SC_PAGESIZE) + 1;
 		ptr = arena_calloc(&arena, 1, size);
 		if (ptr == NULL)
 		{
-			fprintf(stderr, RED "KO " RESET);
-			return;
+			ret = EXIT_FAILURE;
+			break;
 		}
-		for (size_t ii = 0; ii < size; ii += 1)
+		ret = test_arena_range_is_zero_bytes(ptr, size);
+		if (ret == EXIT_FAILURE)
 		{
-			if (ptr[ii] != '\0')
-			{
-				fprintf(stderr, RED "KO " RESET);
-				return;
-			}
+			break;
 		}
 	}
-	fprintf(stdout, GREEN "OK " RESET);
 	arena_destroy(&arena);
+	return (ret);
 }
 
-void test_arena_calloc_varying_sizes_ten()
+int test_arena_calloc_varying_sizes_ten()
 {
 	t_arena arena;
+	int ret;
 	size_t size;
 	char *ptr;
 	srand(time(NULL));
@@ -171,30 +163,27 @@ void test_arena_calloc_varying_sizes_ten()
 		ptr = arena_calloc(&arena, 1, size);
 		if (ptr == NULL)
 		{
-			fprintf(stderr, RED "KO " RESET);
-			return;
+			ret = EXIT_FAILURE;
+			break;
 		}
-		for (size_t ii = 0; ii < size; ii += 1)
+		ret = test_arena_range_is_zero_bytes(ptr, size);
+		if (ret == EXIT_FAILURE)
 		{
-			if (ptr[ii] != '\0')
-			{
-				fprintf(stderr, RED "KO " RESET);
-				return;
-			}
+			break;
 		}
 	}
-	fprintf(stdout, GREEN "OK " RESET);
 	arena_destroy(&arena);
+	return (ret);
 }
 
-int main(void)
+int main()
 {
-	test_arena_calloc_zero_bytes();
-	test_arena_calloc_one_byte();
-	test_arena_calloc_buffer_size_one();
-	test_arena_calloc_buffer_size_ten();
-	test_arena_calloc_buffer_size_plus_one_one();
-	test_arena_calloc_buffer_size_plus_one_ten();
-	test_arena_calloc_varying_sizes_ten();
+	RUN_TEST(test_arena_calloc_zero_bytes);
+	RUN_TEST(test_arena_calloc_one_byte);
+	RUN_TEST(test_arena_calloc_buffer_size_one);
+	RUN_TEST(test_arena_calloc_buffer_size_ten);
+	RUN_TEST(test_arena_calloc_buffer_size_plus_one_one);
+	RUN_TEST(test_arena_calloc_buffer_size_plus_one_ten);
+	RUN_TEST(test_arena_calloc_varying_sizes_ten);
 	printf("\n");
 }

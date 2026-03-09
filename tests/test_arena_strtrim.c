@@ -1,113 +1,99 @@
-#include "arena.h"
-#include "colors.h"
-#include <stdio.h>
-#include <unistd.h>
+#include "test_arena.h"
 
-void test_arena_print_check_strtrim(char *trim, char *compare)
+int test_arena_compare_strtrim(char *trim, char *compare)
 {
 	if (strcmp(trim, compare) == 0)
 	{
-		fprintf(stdout, GREEN "OK " RESET);
+		return (EXIT_SUCCESS);
 	}
 	else
 	{
-		fprintf(stderr, RED "KO " RESET);
+		return (EXIT_FAILURE);
 	}
 }
 
-void test_arena_strtrim_normal(void)
+int test_arena_strtrim_normal()
 {
 	t_arena arena;
+	int ret;
 	char *trim;
 	char *str = "     This is my first C Library     ";
 	char *set = " ";
 
 	arena_build(&arena);
 	trim = arena_strtrim(&arena, str, set);
-	test_arena_print_check_strtrim(trim, "This is my first C Library");
+	ret = test_arena_compare_strtrim(trim, "This is my first C Library");
 	arena_destroy(&arena);
+	return (ret);
 }
 
-void test_arena_strtrim_no_padding(void)
+int test_arena_strtrim_no_padding()
 {
 	t_arena arena;
+	int ret;
 	char *trim;
 	char *str = "NoSpaces";
 	char *set = " ";
 
 	arena_build(&arena);
 	trim = arena_strtrim(&arena, str, set);
-	test_arena_print_check_strtrim(trim, "NoSpaces");
+	ret = test_arena_compare_strtrim(trim, "NoSpaces");
 	arena_destroy(&arena);
+	return (ret);
 }
 
-void test_arena_strtrim_multiple_chars(void)
+int test_arena_strtrim_multiple_chars()
 {
 	t_arena arena;
+	int ret;
 	char *trim;
 	char *str = "***---Hello World---***";
 	char *set = "*-";
 
 	arena_build(&arena);
 	trim = arena_strtrim(&arena, str, set);
-	test_arena_print_check_strtrim(trim, "Hello World");
+	ret = test_arena_compare_strtrim(trim, "Hello World");
 	arena_destroy(&arena);
+	return (ret);
 }
 
-void test_arena_strtrim_all_spaces(void)
+int test_arena_strtrim_all_spaces()
 {
 	t_arena arena;
+	int ret;
 	char *trim;
 	char *str = "     ";
 	char *set = " ";
 
 	arena_build(&arena);
 	trim = arena_strtrim(&arena, str, set);
-	test_arena_print_check_strtrim(trim, "");
+	ret = test_arena_compare_strtrim(trim, "");
 	arena_destroy(&arena);
+	return (ret);
 }
 
-void test_arena_strtrim_null_byte()
+int test_arena_strtrim_set_inbetween()
 {
 	t_arena arena;
-	char *trim;
-	char *str = "Hi    ";
-	char *set = " ";
-
-	arena_build(&arena);
-	trim = arena_strtrim(&arena, str, set);
-	if (trim[2] == '\0')
-	{
-		fprintf(stdout, GREEN "OK " RESET);
-	}
-	else
-	{
-		fprintf(stderr, RED "KO " RESET);
-	}
-	arena_destroy(&arena);
-}
-
-void test_arena_strtrim_set_inbetween()
-{
-	t_arena arena;
+	int ret;
 	char *trim;
 	char *str = "'   ,,,   '";
 	char *set = " ,";
 
 	arena_build(&arena);
 	trim = arena_strtrim(&arena, str, set);
-	test_arena_print_check_strtrim(trim, "'   ,,,   '");
+	ret = test_arena_compare_strtrim(trim, "'   ,,,   '");
 	arena_destroy(&arena);
+	return (ret);
 }
 
 
-int main(void)
+int main()
 {
-	test_arena_strtrim_normal();
-	test_arena_strtrim_no_padding();
-	test_arena_strtrim_multiple_chars();
-	test_arena_strtrim_all_spaces();
-	test_arena_strtrim_null_byte();
-	test_arena_strtrim_set_inbetween();
+	RUN_TEST(test_arena_strtrim_normal);
+	RUN_TEST(test_arena_strtrim_no_padding);
+	RUN_TEST(test_arena_strtrim_multiple_chars);
+	RUN_TEST(test_arena_strtrim_all_spaces);
+	RUN_TEST(test_arena_strtrim_set_inbetween);
 	printf("\n");
 }

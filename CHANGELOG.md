@@ -12,13 +12,23 @@ Everything under the Unreleased section are planned features, but may not be gua
 ### Added
 
 - Added new functions:
-	- arena_strreplace
-		- Search and replace parts of a string with another string.
 	- arena_getnextline
 		- Return a single line from the specified file descriptor, returning the following line in the next function call.
 	- arena_strgenerate
 		- Return a randomly generated ascii string of specified characters with specified length.
 
+
+## [1.2.0] - 2026-03-09
+
+### Added
+
+- Added new functions:
+	- arena_strreplace
+		- Search and replace parts of a string with another string.
+
+### Changed
+
+- Reworked Unit tests. The function name will be printed out when a test fails.
 
 ## [1.1.1] - 2026-03-08
 

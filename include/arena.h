@@ -109,6 +109,22 @@ char *arena_strjoin(t_arena *arena, const char *leftstr, const char *rightstr);
 char *arena_strndup(t_arena *arena, const char *str, size_t num);
 
 /**
+ * @brief Replace all instances of `search` with `replace`.
+ *
+ * If `search` is an empty string, or no matching words in `str` were found, then it is
+ * the equivalent of calling arena_strdup(str).
+ *
+ * @param arena Stores the returning pointer.
+ * @param str The string to replace the matching searches.
+ * @param search The strings to be replaced.
+ * @param replace The string to replace `search` with.
+ *
+ * @retval Pointer to the new string with replaced words on success.
+ * @retval NULL on malloc failure.
+ */
+char *arena_strreplace(t_arena *arena, const char *str, const char *search, const char *replace);
+
+/**
  * @brief Split `str` into multiple strings matching `delimiter`.
  *
  * Delimiters at the start and end of `str` will be omitted.

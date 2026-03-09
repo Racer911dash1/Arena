@@ -1,6 +1,6 @@
 # Project Name
 PROJECT	:= arena
-VERSION	:= 1.1.1
+VERSION	:= 1.2.0
 PREFIX	?= /usr/local
 
 # Directories
@@ -10,15 +10,16 @@ INCDIR	:= $(PREFIX)/include/$(PROJECT)
 LIBDIR	:= $(PREFIX)/lib
 
 # Sources, Objects and Dependencies
-SRCS :=	arena_calloc.c \
+SRCS :=	arena_build.c \
+		arena_calloc.c \
 		arena_destroy.c \
-		arena_build.c \
 		arena_malloc.c \
-		arena_strsplit_collapse.c \
-		arena_strsplit_preserve.c \
 		arena_strdup.c \
 		arena_strjoin.c \
 		arena_strndup.c \
+		arena_strreplace.c \
+		arena_strsplit_collapse.c \
+		arena_strsplit_preserve.c \
 		arena_strtrim.c \
 		arena_substr.c \
 
@@ -49,7 +50,6 @@ SONAME		:= $(PROJECT).so.$(SO_MAJOR)
 $(OBJDIR)/%.o: $(SRCDIR)/%.c Makefile | $(OBJDIR)
 	@echo $(BLUE)Compiling $@$(RESET)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
-
 
 .PHONY: help
 help: ## Show all Makefile rules.
@@ -124,17 +124,18 @@ fclean: clean ## Remove all object and dependecy files, including the static lib
 TESTDIR		:= tests/
 TESTOBJDIR	:= $(TESTDIR)obj_test/
 
-TESTCFLAGS	:= $(CFLAGS) -fsanitize=address
+TESTCFLAGS	:= $(CFLAGS) -g -fsanitize=address
 
 TESTSRCS :=	test_arena_build.c \
 			test_arena_calloc.c \
 			test_arena_destroy.c \
 			test_arena_malloc.c \
-			test_arena_strsplit_collapse.c \
-			test_arena_strsplit_preserve.c \
 			test_arena_strdup.c \
 			test_arena_strjoin.c \
 			test_arena_strndup.c \
+			test_arena_strreplace.c \
+			test_arena_strsplit_collapse.c \
+			test_arena_strsplit_preserve.c \
 			test_arena_strtrim.c \
 			test_arena_substr.c \
 

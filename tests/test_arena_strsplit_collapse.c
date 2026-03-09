@@ -1,44 +1,41 @@
-#include "arena.h"
-#include "colors.h"
-#include <stdio.h>
-#include <unistd.h>
+#include "test_arena.h"
 
-void test_arena_print_check_strsplit_collapse_null(char **split)
+int test_arena_strsplit_collapse_null(char **split)
 {
 	if (split == NULL)
 	{
-		fprintf(stdout, GREEN "OK " RESET);
+		return (EXIT_SUCCESS);
 	}
 	else
 	{
-		fprintf(stderr, RED "KO " RESET);
+		return (EXIT_FAILURE);
 	}
 }
 
-void test_arena_print_check_strtrim(char **split, char **compare)
+int test_arena_compare_strtrim(char **split, char **compare)
 {
 	size_t idx;
 	for (idx = 0; compare[idx]; idx += 1)
 	{
 		if (strcmp(split[idx], compare[idx]) != 0)
 		{
-			fprintf(stderr, RED "KO " RESET);
-			return ;
+			return (EXIT_FAILURE);
 		}
 	}
 	if (split[idx] != NULL)
 	{
-		fprintf(stderr, RED "KO " RESET);
+		return (EXIT_FAILURE);
 	}
 	else
 	{
-		fprintf(stdout, GREEN "OK " RESET);
+		return (EXIT_SUCCESS);
 	}
 }
 
-void test_arena_strsplit_collapse_simple(void)
+int test_arena_strsplit_collapse_simple()
 {
 	t_arena arena;
+	int ret;
 	char **split;
 	char *compare[] = {"Hello", "World", NULL};
 	char *str = "Hello World";
@@ -46,13 +43,15 @@ void test_arena_strsplit_collapse_simple(void)
 
 	arena_build(&arena);
 	split = arena_strsplit_collapse(&arena, str, delimiters);
-	test_arena_print_check_strtrim(split, compare);
+	ret = test_arena_compare_strtrim(split, compare);
 	arena_destroy(&arena);
+	return (ret);
 }
 
-void test_arena_strsplit_collapse_basic(void)
+int test_arena_strsplit_collapse_basic()
 {
 	t_arena arena;
+	int ret;
 	char **split;
 	char *compare[] = {"This", "is", "my", "first", "C", "Library", NULL};
 	char *str = " This is,,my   first.C Library,";
@@ -60,13 +59,15 @@ void test_arena_strsplit_collapse_basic(void)
 
 	arena_build(&arena);
 	split = arena_strsplit_collapse(&arena, str, delimiters);
-	test_arena_print_check_strtrim(split, compare);
+	ret = test_arena_compare_strtrim(split, compare);
 	arena_destroy(&arena);
+	return (ret);
 }
 
-void test_arena_strsplit_collapse_empty_string(void)
+int test_arena_strsplit_collapse_empty_string()
 {
 	t_arena arena;
+	int ret;
 	char **split;
 	char *compare[] = {NULL};
 	char *str = "";
@@ -74,13 +75,15 @@ void test_arena_strsplit_collapse_empty_string(void)
 
 	arena_build(&arena);
 	split = arena_strsplit_collapse(&arena, str, delimiters);
-	test_arena_print_check_strtrim(split, compare);
+	ret = test_arena_compare_strtrim(split, compare);
 	arena_destroy(&arena);
+	return (ret);
 }
 
-void test_arena_strsplit_collapse_only_delimiters(void)
+int test_arena_strsplit_collapse_only_delimiters()
 {
 	t_arena arena;
+	int ret;
 	char **split;
 	char *compare[] = {NULL};
 	char *str = "   ,,, ";
@@ -88,13 +91,15 @@ void test_arena_strsplit_collapse_only_delimiters(void)
 
 	arena_build(&arena);
 	split = arena_strsplit_collapse(&arena, str, delimiters);
-	test_arena_print_check_strtrim(split, compare);
+	ret = test_arena_compare_strtrim(split, compare);
 	arena_destroy(&arena);
+	return (ret);
 }
 
-void test_arena_strsplit_collapse_single_word(void)
+int test_arena_strsplit_collapse_single_word()
 {
 	t_arena arena;
+	int ret;
 	char **split;
 	char *compare[] = {"HelloWorld", NULL};
 	char *str = "HelloWorld";
@@ -102,13 +107,15 @@ void test_arena_strsplit_collapse_single_word(void)
 
 	arena_build(&arena);
 	split = arena_strsplit_collapse(&arena, str, delimiters);
-	test_arena_print_check_strtrim(split, compare);
+	ret = test_arena_compare_strtrim(split, compare);
 	arena_destroy(&arena);
+	return (ret);
 }
 
-void test_arena_strsplit_collapse_no_delimiter(void)
+int test_arena_strsplit_collapse_no_delimiter()
 {
 	t_arena arena;
+	int ret;
 	char **split;
 	char *compare[] = {":Hello World,how.are!you?doing;", NULL};
 	char *str = ":Hello World,how.are!you?doing;";
@@ -116,17 +123,18 @@ void test_arena_strsplit_collapse_no_delimiter(void)
 
 	arena_build(&arena);
 	split = arena_strsplit_collapse(&arena, str, delimiters);
-	test_arena_print_check_strtrim(split, compare);
+	ret = test_arena_compare_strtrim(split, compare);
 	arena_destroy(&arena);
+	return (ret);
 }
 
-int main(void)
+int main()
 {
-	test_arena_strsplit_collapse_simple();
-	test_arena_strsplit_collapse_basic();
-	test_arena_strsplit_collapse_empty_string();
-	test_arena_strsplit_collapse_only_delimiters();
-	test_arena_strsplit_collapse_single_word();
-	test_arena_strsplit_collapse_no_delimiter();
+	RUN_TEST(test_arena_strsplit_collapse_simple);
+	RUN_TEST(test_arena_strsplit_collapse_basic);
+	RUN_TEST(test_arena_strsplit_collapse_empty_string);
+	RUN_TEST(test_arena_strsplit_collapse_only_delimiters);
+	RUN_TEST(test_arena_strsplit_collapse_single_word);
+	RUN_TEST(test_arena_strsplit_collapse_no_delimiter);
 	printf("\n");
 }

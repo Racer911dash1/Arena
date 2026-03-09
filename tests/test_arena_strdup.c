@@ -1,87 +1,93 @@
-#include "arena.h"
-#include "colors.h"
-#include <stdio.h>
-#include <string.h>
-#include <unistd.h>
+#include "test_arena.h"
 
-void test_arena_print_check_strdup(char *dup, char *compare)
+int test_arena_compare_strdup(char *dup, char *compare)
 {
 	if (strcmp(dup, compare) == 0)
 	{
-		fprintf(stdout, GREEN "OK " RESET);
+		return (EXIT_SUCCESS);
 	}
 	else
 	{
-		fprintf(stderr, RED "KO " RESET);
+		return (EXIT_FAILURE);
 	}
 }
 
-void test_arena_strdup_simple(void)
+int test_arena_strdup_simple()
 {
 	t_arena arena;
+	int ret;
 	char *dup;
 	char *str = "Hello World";
 
 	arena_build(&arena);
 	dup = arena_strdup(&arena, str);
-	test_arena_print_check_strdup(dup, "Hello World");
+	ret = test_arena_compare_strdup(dup, "Hello World");
 	arena_destroy(&arena);
+	return (ret);
 }
 
-void test_arena_strdup_empty(void)
+int test_arena_strdup_empty()
 {
 	t_arena arena;
+	int ret;
 	char *dup;
 	char *str = "";
 
 	arena_build(&arena);
 	dup = arena_strdup(&arena, str);
-	test_arena_print_check_strdup(dup, "");
+	ret = test_arena_compare_strdup(dup, "");
 	arena_destroy(&arena);
+	return (ret);
 }
 
-void test_arena_strdup_single_char(void)
+int test_arena_strdup_single_char()
 {
 	t_arena arena;
+	int ret;
 	char *dup;
 	char *str = "A";
 
 	arena_build(&arena);
 	dup = arena_strdup(&arena, str);
-	test_arena_print_check_strdup(dup, "A");
+	ret = test_arena_compare_strdup(dup, "A");
 	arena_destroy(&arena);
+	return (ret);
 }
 
-void test_arena_strdup_special_chars(void)
+int test_arena_strdup_special_chars()
 {
 	t_arena arena;
+	int ret;
 	char *dup;
 	char *str = "!@#$%^&*()";
 
 	arena_build(&arena);
 	dup = arena_strdup(&arena, str);
-	test_arena_print_check_strdup(dup, "!@#$%^&*()");
+	ret = test_arena_compare_strdup(dup, "!@#$%^&*()");
 	arena_destroy(&arena);
+	return (ret);
 }
 
-void test_arena_strdup_long_string(void)
+int test_arena_strdup_long_string()
 {
 	t_arena arena;
+	int ret;
 	char *dup;
 	char *str = "This is a much longer string with multiple words and spaces to test duplication";
 
 	arena_build(&arena);
 	dup = arena_strdup(&arena, str);
-	test_arena_print_check_strdup(dup, "This is a much longer string with multiple words and spaces to test duplication");
+	ret = test_arena_compare_strdup(dup, "This is a much longer string with multiple words and spaces to test duplication");
 	arena_destroy(&arena);
+	return (ret);
 }
 
-int main(void)
+int main()
 {
-	test_arena_strdup_simple();
-	test_arena_strdup_empty();
-	test_arena_strdup_single_char();
-	test_arena_strdup_special_chars();
-	test_arena_strdup_long_string();
+	RUN_TEST(test_arena_strdup_simple);
+	RUN_TEST(test_arena_strdup_empty);
+	RUN_TEST(test_arena_strdup_single_char);
+	RUN_TEST(test_arena_strdup_special_chars);
+	RUN_TEST(test_arena_strdup_long_string);
 	printf("\n");
 }
