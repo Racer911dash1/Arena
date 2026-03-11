@@ -15,57 +15,57 @@ int test_arena_compare_substr(char *substr, char *compare)
 int test_arena_substr_simple()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 	char *substr;
 	char *str = "Hello World";
 
 	arena_build(&arena);
 	substr = arena_substr(&arena, str, 6, 5);
-	ret = test_arena_compare_substr(substr, "World");
+	exit_status = test_arena_compare_substr(substr, "World");
 	arena_destroy(&arena);
-	return (ret);
+	return (exit_status);
 }
 
 int test_arena_substr_length_zero()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 	char *substr;
 	char *str = "Hello World";
 
 	arena_build(&arena);
 	substr = arena_substr(&arena, str, 6, 5);
-	ret = test_arena_compare_substr(substr, "World");
+	exit_status = test_arena_compare_substr(substr, "World");
 	arena_destroy(&arena);
-	return (ret);
+	return (exit_status);
 }
 
 int test_arena_substr_start_larger_than_length_of_str()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 	char *substr;
 	char *str = "Short";
 
 	arena_build(&arena);
 	substr = arena_substr(&arena, str, 10, 10);
-	ret = test_arena_compare_substr(substr, "");
+	exit_status = test_arena_compare_substr(substr, "");
 	arena_destroy(&arena);
-	return (ret);
+	return (exit_status);
 }
 
 int test_arena_substr_empty_str()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 	char *substr;
 	char *str = "";
 
 	arena_build(&arena);
 	substr = arena_substr(&arena, str, 0, 1);
-	ret = test_arena_compare_substr(substr, "");
+	exit_status = test_arena_compare_substr(substr, "");
 	arena_destroy(&arena);
-	return (ret);
+	return (exit_status);
 }
 
 int main()

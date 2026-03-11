@@ -15,71 +15,71 @@ int test_arena_compare_strdup(char *dup, char *compare)
 int test_arena_strdup_simple()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 	char *dup;
 	char *str = "Hello World";
 
 	arena_build(&arena);
 	dup = arena_strdup(&arena, str);
-	ret = test_arena_compare_strdup(dup, "Hello World");
+	exit_status = test_arena_compare_strdup(dup, "Hello World");
 	arena_destroy(&arena);
-	return (ret);
+	return (exit_status);
 }
 
 int test_arena_strdup_empty()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 	char *dup;
 	char *str = "";
 
 	arena_build(&arena);
 	dup = arena_strdup(&arena, str);
-	ret = test_arena_compare_strdup(dup, "");
+	exit_status = test_arena_compare_strdup(dup, "");
 	arena_destroy(&arena);
-	return (ret);
+	return (exit_status);
 }
 
 int test_arena_strdup_single_char()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 	char *dup;
 	char *str = "A";
 
 	arena_build(&arena);
 	dup = arena_strdup(&arena, str);
-	ret = test_arena_compare_strdup(dup, "A");
+	exit_status = test_arena_compare_strdup(dup, "A");
 	arena_destroy(&arena);
-	return (ret);
+	return (exit_status);
 }
 
 int test_arena_strdup_special_chars()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 	char *dup;
 	char *str = "!@#$%^&*()";
 
 	arena_build(&arena);
 	dup = arena_strdup(&arena, str);
-	ret = test_arena_compare_strdup(dup, "!@#$%^&*()");
+	exit_status = test_arena_compare_strdup(dup, "!@#$%^&*()");
 	arena_destroy(&arena);
-	return (ret);
+	return (exit_status);
 }
 
 int test_arena_strdup_long_string()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 	char *dup;
 	char *str = "This is a much longer string with multiple words and spaces to test duplication";
 
 	arena_build(&arena);
 	dup = arena_strdup(&arena, str);
-	ret = test_arena_compare_strdup(dup, "This is a much longer string with multiple words and spaces to test duplication");
+	exit_status = test_arena_compare_strdup(dup, "This is a much longer string with multiple words and spaces to test duplication");
 	arena_destroy(&arena);
-	return (ret);
+	return (exit_status);
 }
 
 int main()

@@ -1,6 +1,6 @@
 # Project Name
 PROJECT	:= arena
-VERSION	:= 1.2.1
+VERSION	:= 1.3.0
 PREFIX	?= /usr/local
 
 # Directories
@@ -13,10 +13,13 @@ LIBDIR	:= $(PREFIX)/lib
 SRCS :=	arena_build.c \
 		arena_calloc.c \
 		arena_destroy.c \
+		arena_getnextline.c \
 		arena_malloc.c \
+		arena_merge.c \
 		arena_strdup.c \
 		arena_strjoin.c \
 		arena_strndup.c \
+		arena_strnjoin.c \
 		arena_strreplace.c \
 		arena_strsplit_collapse.c \
 		arena_strsplit_preserve.c \
@@ -30,7 +33,7 @@ DEPS	:= $(OBJS:.o=.d)
 # Compiler and Flags
 CC			:= cc
 CFLAGS		:= -Wall -Wextra -O2 -fPIC
-CFLAGS		+= -MMD -MP
+CFLAGS		+= -MMD -MP -g
 INCLUDES	:= -I include/arena	-I include
 AR			:= ar
 ARFLAGS		:= rcs
@@ -121,34 +124,39 @@ fclean: clean ## Remove all object and dependecy files, including the static lib
 	@echo $(BRIGHT_RED)$(PROJECT) cleaned$(RESET)
 
 # Unit tests
-TESTDIR		:= tests/
-TESTOBJDIR	:= $(TESTDIR)obj_test/
+TESTDIR		:= tests
+TESTOBJDIR	:= $(TESTDIR)/obj
+TESTSRCDIR	:= $(TESTDIR)/src
 
-TESTCFLAGS	:= $(CFLAGS) -g -fsanitize=address
+TESTCFLAGS		:= $(CFLAGS) -fsanitize=address
+TESTINCLUDES	:= $(INCLUDES) -I $(TESTDIR)/include
 
 TESTSRCS :=	test_arena_build.c \
 			test_arena_calloc.c \
 			test_arena_destroy.c \
+			test_arena_getnextline.c \
 			test_arena_malloc.c \
+			test_arena_merge.c \
 			test_arena_strdup.c \
 			test_arena_strjoin.c \
 			test_arena_strndup.c \
+			test_arena_strnjoin.c \
 			test_arena_strreplace.c \
 			test_arena_strsplit_collapse.c \
 			test_arena_strsplit_preserve.c \
 			test_arena_strtrim.c \
 			test_arena_substr.c \
 
-TESTPATH := $(addprefix $(TESTDIR),$(TESTSRCS))
-.SECONDARY: TESTOBJS := $(patsubst $(TESTDIR)%,$(TESTOBJDIR)%,$(TESTPATH:.c=.o))
+TESTPATH := $(addprefix $(TESTSRCDIR)/,$(TESTSRCS))
+.SECONDARY: TESTOBJS := $(patsubst $(TESTSRCDIR)%,$(TESTOBJDIR)%,$(TESTPATH:.c=.o))
 TESTDEPS := $(TESTOBJS:.o=.d)
-TESTEXES := $(addprefix $(TESTDIR), $(TESTSRCS:.c=.test))
+TESTEXES := $(addprefix $(TESTDIR)/, $(TESTSRCS:.c=.test))
 
-$(TESTOBJDIR)%.o: $(TESTDIR)%.c Makefile | $(TESTOBJDIR)
+$(TESTOBJDIR)/%.o: $(TESTSRCDIR)/%.c Makefile | $(TESTOBJDIR)
 	@echo $(BLUE)Compiling $@$(RESET)
-	@$(CC) $(TESTCFLAGS) $(INCLUDES) -c $< -o $@
+	@$(CC) $(TESTCFLAGS) $(TESTINCLUDES) -c $< -o $@
 
-$(TESTDIR)%.test: $(TESTOBJDIR)%.o $(STATIC_LIB)
+$(TESTDIR)/%.test: $(TESTOBJDIR)/%.o $(STATIC_LIB)
 	@echo $(PURPLE)Linking $@$(RESET)
 	@$(CC) $(TESTCFLAGS) $< $(STATIC_LIB) -o $@
 

@@ -15,76 +15,76 @@ int test_arena_compare_strtrim(char *trim, char *compare)
 int test_arena_strtrim_normal()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 	char *trim;
 	char *str = "     This is my first C Library     ";
 	char *set = " ";
 
 	arena_build(&arena);
 	trim = arena_strtrim(&arena, str, set);
-	ret = test_arena_compare_strtrim(trim, "This is my first C Library");
+	exit_status = test_arena_compare_strtrim(trim, "This is my first C Library");
 	arena_destroy(&arena);
-	return (ret);
+	return (exit_status);
 }
 
 int test_arena_strtrim_no_padding()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 	char *trim;
 	char *str = "NoSpaces";
 	char *set = " ";
 
 	arena_build(&arena);
 	trim = arena_strtrim(&arena, str, set);
-	ret = test_arena_compare_strtrim(trim, "NoSpaces");
+	exit_status = test_arena_compare_strtrim(trim, "NoSpaces");
 	arena_destroy(&arena);
-	return (ret);
+	return (exit_status);
 }
 
 int test_arena_strtrim_multiple_chars()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 	char *trim;
 	char *str = "***---Hello World---***";
 	char *set = "*-";
 
 	arena_build(&arena);
 	trim = arena_strtrim(&arena, str, set);
-	ret = test_arena_compare_strtrim(trim, "Hello World");
+	exit_status = test_arena_compare_strtrim(trim, "Hello World");
 	arena_destroy(&arena);
-	return (ret);
+	return (exit_status);
 }
 
 int test_arena_strtrim_all_spaces()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 	char *trim;
 	char *str = "     ";
 	char *set = " ";
 
 	arena_build(&arena);
 	trim = arena_strtrim(&arena, str, set);
-	ret = test_arena_compare_strtrim(trim, "");
+	exit_status = test_arena_compare_strtrim(trim, "");
 	arena_destroy(&arena);
-	return (ret);
+	return (exit_status);
 }
 
 int test_arena_strtrim_set_inbetween()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 	char *trim;
 	char *str = "'   ,,,   '";
 	char *set = " ,";
 
 	arena_build(&arena);
 	trim = arena_strtrim(&arena, str, set);
-	ret = test_arena_compare_strtrim(trim, "'   ,,,   '");
+	exit_status = test_arena_compare_strtrim(trim, "'   ,,,   '");
 	arena_destroy(&arena);
-	return (ret);
+	return (exit_status);
 }
 
 

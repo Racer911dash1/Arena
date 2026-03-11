@@ -28,19 +28,19 @@ int test_arena_range_is_zero_bytes(char *ptr, size_t size)
 int test_arena_calloc_zero_bytes()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 
 	arena_build(&arena);
 	arena_calloc(&arena, 0, 0);
-	ret = test_arena_check_not_null(&arena);
+	exit_status = test_arena_check_not_null(&arena);
 	arena_destroy(&arena);
-	return (ret);
+	return (exit_status);
 }
 
 int test_arena_calloc_one_byte()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 	size_t size;
 	char *ptr;
 
@@ -51,15 +51,15 @@ int test_arena_calloc_one_byte()
 	{
 		return (EXIT_FAILURE);
 	}
-	ret = test_arena_range_is_zero_bytes(ptr, size);
+	exit_status = test_arena_range_is_zero_bytes(ptr, size);
 	arena_destroy(&arena);
-	return (ret);
+	return (exit_status);
 }
 
 int test_arena_calloc_buffer_size_one()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 	size_t size;
 	char *ptr;
 
@@ -70,15 +70,15 @@ int test_arena_calloc_buffer_size_one()
 	{
 		return (EXIT_FAILURE);
 	}
-	ret = test_arena_range_is_zero_bytes(ptr, size);
+	exit_status = test_arena_range_is_zero_bytes(ptr, size);
 	arena_destroy(&arena);
-	return (ret);
+	return (exit_status);
 }
 
 int test_arena_calloc_buffer_size_ten()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 	size_t size;
 	char *ptr;
 
@@ -89,23 +89,23 @@ int test_arena_calloc_buffer_size_ten()
 		ptr = arena_calloc(&arena, 1, size);
 		if (ptr == NULL)
 		{
-			ret = EXIT_FAILURE;
+			exit_status = EXIT_FAILURE;
 			break;
 		}
-		ret = test_arena_range_is_zero_bytes(ptr, size);
-		if (ret == EXIT_FAILURE)
+		exit_status = test_arena_range_is_zero_bytes(ptr, size);
+		if (exit_status == EXIT_FAILURE)
 		{
 			break;
 		}
 	}
 	arena_destroy(&arena);
-	return (ret);
+	return (exit_status);
 }
 
 int test_arena_calloc_buffer_size_plus_one_one()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 	size_t size;
 	char *ptr;
 
@@ -116,15 +116,15 @@ int test_arena_calloc_buffer_size_plus_one_one()
 	{
 		return (EXIT_FAILURE);
 	}
-	ret = test_arena_range_is_zero_bytes(ptr, size);
+	exit_status = test_arena_range_is_zero_bytes(ptr, size);
 	arena_destroy(&arena);
-	return (ret);
+	return (exit_status);
 }
 
 int test_arena_calloc_buffer_size_plus_one_ten()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 	size_t size;
 	char *ptr;
 
@@ -135,23 +135,23 @@ int test_arena_calloc_buffer_size_plus_one_ten()
 		ptr = arena_calloc(&arena, 1, size);
 		if (ptr == NULL)
 		{
-			ret = EXIT_FAILURE;
+			exit_status = EXIT_FAILURE;
 			break;
 		}
-		ret = test_arena_range_is_zero_bytes(ptr, size);
-		if (ret == EXIT_FAILURE)
+		exit_status = test_arena_range_is_zero_bytes(ptr, size);
+		if (exit_status == EXIT_FAILURE)
 		{
 			break;
 		}
 	}
 	arena_destroy(&arena);
-	return (ret);
+	return (exit_status);
 }
 
 int test_arena_calloc_varying_sizes_ten()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 	size_t size;
 	char *ptr;
 	srand(time(NULL));
@@ -163,17 +163,17 @@ int test_arena_calloc_varying_sizes_ten()
 		ptr = arena_calloc(&arena, 1, size);
 		if (ptr == NULL)
 		{
-			ret = EXIT_FAILURE;
+			exit_status = EXIT_FAILURE;
 			break;
 		}
-		ret = test_arena_range_is_zero_bytes(ptr, size);
-		if (ret == EXIT_FAILURE)
+		exit_status = test_arena_range_is_zero_bytes(ptr, size);
+		if (exit_status == EXIT_FAILURE)
 		{
 			break;
 		}
 	}
 	arena_destroy(&arena);
-	return (ret);
+	return (exit_status);
 }
 
 int main()

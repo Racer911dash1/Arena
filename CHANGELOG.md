@@ -13,8 +13,6 @@ Everything under the Unreleased section are planned features, but may not be gua
 ### Added
 
 - Added new functions:
-	- arena_getnextline
-		- Return a single line from the specified file descriptor, returning the following line in the next function call.
 	- arena_strgenerate
 		- Return a randomly generated ascii string of specified characters with specified length.
 
@@ -24,9 +22,22 @@ Everything under the Unreleased section are planned features, but may not be gua
 	- uninstall-local
 		- Same reasons as above.
 
+## [1.3.0] - 2026-03-11
+
+### Added
+
+- Added new functions:
+	- arena_merge
+		- Merge two arenas together, with one getting ownership of all pointers while the other one has theirs invalidated.
+	- arena_strnjoin
+		- Join two strings together, but only appending a specified amount of bytes.
+	- arena_getnextline
+		- Return a single line from the specified file descriptor, returning the following line in the next function call.
+
 ### Changed
 
-- Change Unit test structure with src/ and include/ directories
+- Changed the directory layout of the unit tests to be in line with other project layouts.
+- Makefile has those changes applied approapriately, also added the -g compiler flag to CFLAGS
 
 ## [1.2.1] - 2026-03-09
 

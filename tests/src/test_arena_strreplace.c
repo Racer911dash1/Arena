@@ -15,7 +15,7 @@ int test_arena_print_check_strreplace(char *new_str, char *compare)
 int test_arena_strreplace_simple()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 	char *str = "Hello World";
 	char *search = "Hello";
 	char *replace = "World";
@@ -28,15 +28,15 @@ int test_arena_strreplace_simple()
 		arena_destroy(&arena);
 		return (EXIT_FAILURE);
 	}
-	ret = test_arena_print_check_strreplace(new_str, "World World");
+	exit_status = test_arena_print_check_strreplace(new_str, "World World");
 	arena_destroy(&arena);
-	return (ret);
+	return (exit_status);
 }
 
 int test_arena_strreplace_empty_str()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 	char *str = "";
 	char *search = "Hello";
 	char *replace = "World";
@@ -49,15 +49,15 @@ int test_arena_strreplace_empty_str()
 		arena_destroy(&arena);
 		return (EXIT_FAILURE);
 	}
-	ret = test_arena_print_check_strreplace(new_str, "");
+	exit_status = test_arena_print_check_strreplace(new_str, "");
 	arena_destroy(&arena);
-	return (ret);
+	return (exit_status);
 }
 
 int test_arena_strreplace_empty_search()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 	char *str = "Hello World";
 	char *search = "";
 	char *replace = "World";
@@ -70,15 +70,15 @@ int test_arena_strreplace_empty_search()
 		arena_destroy(&arena);
 		return (EXIT_FAILURE);
 	}
-	ret = test_arena_print_check_strreplace(new_str, "Hello World");
+	exit_status = test_arena_print_check_strreplace(new_str, "Hello World");
 	arena_destroy(&arena);
-	return (ret);
+	return (exit_status);
 }
 
 int test_arena_strreplace_empty_replace()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 	char *str = "Hello World";
 	char *search = "Hello";
 	char *replace = "";
@@ -91,15 +91,15 @@ int test_arena_strreplace_empty_replace()
 		arena_destroy(&arena);
 		return (EXIT_FAILURE);
 	}
-	ret = test_arena_print_check_strreplace(new_str, " World");
+	exit_status = test_arena_print_check_strreplace(new_str, " World");
 	arena_destroy(&arena);
-	return (ret);
+	return (exit_status);
 }
 
 int test_arena_strreplace_search_longer_than_str()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 	char *str = "Long";
 	char *search = "Longer";
 	char *replace = "Longerest";
@@ -112,15 +112,15 @@ int test_arena_strreplace_search_longer_than_str()
 		arena_destroy(&arena);
 		return (EXIT_FAILURE);
 	}
-	ret = test_arena_print_check_strreplace(new_str, "Long");
+	exit_status = test_arena_print_check_strreplace(new_str, "Long");
 	arena_destroy(&arena);
-	return (ret);
+	return (exit_status);
 }
 
 int test_arena_strreplace_multiple_replacements()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 	char *str = "Every letter combination of er will be replaced with ER";
 	char *search = "er";
 	char *replace = "ER";
@@ -133,15 +133,15 @@ int test_arena_strreplace_multiple_replacements()
 		arena_destroy(&arena);
 		return (EXIT_FAILURE);
 	}
-	ret = test_arena_print_check_strreplace(new_str, "EvERy lettER combination of ER will be replaced with ER");
+	exit_status = test_arena_print_check_strreplace(new_str, "EvERy lettER combination of ER will be replaced with ER");
 	arena_destroy(&arena);
-	return (ret);
+	return (exit_status);
 }
 
 int test_arena_strreplace_same_search_and_replace()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 	char *str = "Hello World";
 	char *search = "Hello";
 	char *replace = "Hello";
@@ -154,15 +154,15 @@ int test_arena_strreplace_same_search_and_replace()
 		arena_destroy(&arena);
 		return (EXIT_FAILURE);
 	}
-	ret = test_arena_print_check_strreplace(new_str, "Hello World");
+	exit_status = test_arena_print_check_strreplace(new_str, "Hello World");
 	arena_destroy(&arena);
-	return (ret);
+	return (exit_status);
 }
 
 int test_arena_strreplace_no_replacements()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 	char *str = "Hello World";
 	char *search = "Unmatchable";
 	char *replace = "World";
@@ -175,15 +175,15 @@ int test_arena_strreplace_no_replacements()
 		arena_destroy(&arena);
 		return (EXIT_FAILURE);
 	}
-	ret = test_arena_print_check_strreplace(new_str, "Hello World");
+	exit_status = test_arena_print_check_strreplace(new_str, "Hello World");
 	arena_destroy(&arena);
-	return (ret);
+	return (exit_status);
 }
 
 int test_arena_strreplace_replace_at_start()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 	char *str = "123 456 789";
 	char *search = "123";
 	char *replace = "456 789";
@@ -196,15 +196,15 @@ int test_arena_strreplace_replace_at_start()
 		arena_destroy(&arena);
 		return (EXIT_FAILURE);
 	}
-	ret = test_arena_print_check_strreplace(new_str, "456 789 456 789");
+	exit_status = test_arena_print_check_strreplace(new_str, "456 789 456 789");
 	arena_destroy(&arena);
-	return (ret);
+	return (exit_status);
 }
 
 int test_arena_strreplace_replace_at_middle()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 	char *str = "123 456 789";
 	char *search = "456";
 	char *replace = "789 123";
@@ -217,15 +217,15 @@ int test_arena_strreplace_replace_at_middle()
 		arena_destroy(&arena);
 		return (EXIT_FAILURE);
 	}
-	ret = test_arena_print_check_strreplace(new_str, "123 789 123 789");
+	exit_status = test_arena_print_check_strreplace(new_str, "123 789 123 789");
 	arena_destroy(&arena);
-	return (ret);
+	return (exit_status);
 }
 
 int test_arena_strreplace_replace_at_end()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 	char *str = "123 456 789";
 	char *search = "789";
 	char *replace = "123 456";
@@ -238,9 +238,9 @@ int test_arena_strreplace_replace_at_end()
 		arena_destroy(&arena);
 		return (EXIT_FAILURE);
 	}
-	ret = test_arena_print_check_strreplace(new_str, "123 456 123 456");
+	exit_status = test_arena_print_check_strreplace(new_str, "123 456 123 456");
 	arena_destroy(&arena);
-	return (ret);
+	return (exit_status);
 }
 
 int main()

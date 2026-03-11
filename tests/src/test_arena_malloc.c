@@ -16,52 +16,52 @@ int test_arena_ptr_not_null(char *ptr)
 int test_arena_malloc_zero_bytes()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 	size_t size;
 	char *ptr;
 
 	arena_build(&arena);
 	size = 0;
 	ptr = arena_malloc(&arena, size);
-	ret = test_arena_ptr_not_null(ptr);
+	exit_status = test_arena_ptr_not_null(ptr);
 	arena_destroy(&arena);
-	return (ret);
+	return (exit_status);
 }
 
 int test_arena_malloc_one_byte()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 	size_t size;
 	char *ptr;
 
 	arena_build(&arena);
 	size = 1;
 	ptr = arena_malloc(&arena, size);
-	ret = test_arena_ptr_not_null(ptr);
+	exit_status = test_arena_ptr_not_null(ptr);
 	arena_destroy(&arena);
-	return (ret);
+	return (exit_status);
 }
 
 int test_arena_malloc_buffer_size_one()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 	size_t size;
 	char *ptr;
 
 	arena_build(&arena);
 	size = sysconf(_SC_PAGESIZE);
 	ptr = arena_malloc(&arena, size);
-	ret = test_arena_ptr_not_null(ptr);
+	exit_status = test_arena_ptr_not_null(ptr);
 	arena_destroy(&arena);
-	return (ret);
+	return (exit_status);
 }
 
 int test_arena_malloc_buffer_size_ten()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 	size_t size;
 	char *ptr;
 
@@ -70,35 +70,35 @@ int test_arena_malloc_buffer_size_ten()
 	for (size_t i = 0; i < 10; i += 1)
 	{
 		ptr = arena_malloc(&arena, size);
-		ret = test_arena_ptr_not_null(ptr);
-		if (ret == EXIT_FAILURE)
+		exit_status = test_arena_ptr_not_null(ptr);
+		if (exit_status == EXIT_FAILURE)
 		{
 			break;
 		}
 	}
 	arena_destroy(&arena);
-	return (ret);
+	return (exit_status);
 }
 
 int test_arena_malloc_buffer_size_plus_one_one()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 	size_t size;
 	char *ptr;
 
 	arena_build(&arena);
 	size = sysconf(_SC_PAGESIZE) + 1;
 	ptr = arena_malloc(&arena, size);
-	ret = test_arena_ptr_not_null(ptr);
+	exit_status = test_arena_ptr_not_null(ptr);
 	arena_destroy(&arena);
-	return (ret);
+	return (exit_status);
 }
 
 int test_arena_malloc_buffer_size_plus_one_ten()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 	size_t size;
 	char *ptr;
 
@@ -107,20 +107,20 @@ int test_arena_malloc_buffer_size_plus_one_ten()
 	for (size_t i = 0; i < 10; i += 1)
 	{
 		ptr = arena_malloc(&arena, size);
-		ret = test_arena_ptr_not_null(ptr);
-		if (ret == EXIT_FAILURE)
+		exit_status = test_arena_ptr_not_null(ptr);
+		if (exit_status == EXIT_FAILURE)
 		{
 			break;
 		}
 	}
 	arena_destroy(&arena);
-	return (ret);
+	return (exit_status);
 }
 
 int test_arena_malloc_varying_sizes_ten()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 	size_t size;
 	char *ptr;
 	srand(time(NULL));
@@ -130,20 +130,20 @@ int test_arena_malloc_varying_sizes_ten()
 	{
 		size = rand() % sysconf(_SC_PAGESIZE) + 1;
 		ptr = arena_malloc(&arena, size);
-		ret = test_arena_ptr_not_null(ptr);
-		if (ret == EXIT_FAILURE)
+		exit_status = test_arena_ptr_not_null(ptr);
+		if (exit_status == EXIT_FAILURE)
 		{
 			break;
 		}
 	}
 	arena_destroy(&arena);
-	return (ret);
+	return (exit_status);
 }
 
 int test_arena_malloc_pointer_comparison()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 	char *ptr1;
 	char *ptr2;
 
@@ -152,14 +152,14 @@ int test_arena_malloc_pointer_comparison()
 	ptr2 = arena_malloc(&arena, 4 * sizeof(char));
 	if (ptr1 == ptr2)
 	{
-		ret = EXIT_FAILURE;
+		exit_status = EXIT_FAILURE;
 	}
 	else
 	{
-		ret = EXIT_SUCCESS;
+		exit_status = EXIT_SUCCESS;
 	}
 	arena_destroy(&arena);
-	return (ret);
+	return (exit_status);
 }
 
 int main()

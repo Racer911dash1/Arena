@@ -49,11 +49,25 @@ void *arena_calloc(t_arena *arena, size_t num, size_t size);
  * @brief Free all allocated memory.
  *
  * This function should be called when the arena is no longer needed.
- * Preferably only in the same scope as the declaration of the variable aswell.
+ * Preferably only in the same scope as the declaration of the variable.
  *
- * @param arena Free the memory space pointed to by arena.
+ * @param arena The memory space pointed to by arena.
  */
 void arena_destroy(t_arena *arena);
+
+/**
+ * @brief Return a line read from `fd`.
+ *
+ * Successive function calls will return successive lines.
+ * Multiple file descriptors can be handled simultaneously.
+ *
+ * @param arena Stores the returning pointer.
+ * @param fd The file descriptor to read from.
+ *
+ * @retval Pointer to the line read from `fd` on success.
+ * @retval NULL on malloc failure or EOF.
+ */
+char *arena_getnextline(t_arena *arena, int fd);
 
 /**
  * @brief Behaves similarly to standard malloc.
@@ -67,6 +81,18 @@ void arena_destroy(t_arena *arena);
  * @retval NULL on malloc failure.
  */
 void *arena_malloc(t_arena *arena, size_t size);
+
+/**
+ * @brief Merge two different arenas together.
+ *
+ * Append `src` to `dest`, doing that will let `dest` be in full control of
+ * all pointers while `src` will have its pointers be invalidated by setting
+ * them to NULL.
+ *
+ * @param dest The arena to append to.
+ * @param src The arena that will be discarded.
+ */
+void arena_merge(t_arena *dest, t_arena *src);
 
 /**
  * @brief Duplicate a `str` to a new pointer.
@@ -107,6 +133,20 @@ char *arena_strjoin(t_arena *arena, const char *leftstr, const char *rightstr);
  * @retval NULL on malloc failure.
  */
 char *arena_strndup(t_arena *arena, const char *str, size_t num);
+
+/**
+ * @brief Join two strings together into one, with at most `num` bytes of `rightstr`
+ * @brief appended to `leftstr`.
+ *
+ * @param arena Stores the returning pointer.
+ * @param leftstr The prefix of the new string.
+ * @param rightstr The suffix of the new string.
+ * @param num The amount of bytes of `rightstr` to append.
+ *
+ * @retval Pointer from the result of both strings joined together on success.
+ * @retval NULL on malloc failure.
+ */
+char *arena_strnjoin(t_arena *arena, const char *leftstr, const char *rightstr, size_t num);
 
 /**
  * @brief Replace all instances of `search` with `replace`.

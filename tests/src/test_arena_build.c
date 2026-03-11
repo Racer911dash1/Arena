@@ -15,11 +15,11 @@ int test_arena_print_check_null(t_arena *arena)
 int test_arena_build_init()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 
 	arena_build(&arena);
-	ret = test_arena_print_check_null(&arena);
-	return (ret);
+	exit_status = test_arena_print_check_null(&arena);
+	return (exit_status);
 }
 
 int main()

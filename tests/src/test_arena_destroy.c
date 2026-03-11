@@ -15,30 +15,30 @@ int test_arena_print_check_null(t_arena *arena)
 int test_arena_destroy_empty()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 
 	arena_build(&arena);
 	arena_destroy(&arena);
-	ret = test_arena_print_check_null(&arena);
-	return (ret);
+	exit_status = test_arena_print_check_null(&arena);
+	return (exit_status);
 }
 
 int test_arena_destroy_single_alloc()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 
 	arena_build(&arena);
 	arena_malloc(&arena, 1);
 	arena_destroy(&arena);
-	ret = test_arena_print_check_null(&arena);
-	return (ret);
+	exit_status = test_arena_print_check_null(&arena);
+	return (exit_status);
 }
 
 int test_arena_destroy_many_alloc()
 {
 	t_arena arena;
-	int ret;
+	int exit_status;
 
 	arena_build(&arena);
 	for (size_t i = 0; i < 10; i += 1)
@@ -46,8 +46,8 @@ int test_arena_destroy_many_alloc()
 		arena_malloc(&arena, sysconf(_SC_PAGESIZE) + 1);
 	}
 	arena_destroy(&arena);
-	ret = test_arena_print_check_null(&arena);
-	return (ret);
+	exit_status = test_arena_print_check_null(&arena);
+	return (exit_status);
 }
 
 int main()
