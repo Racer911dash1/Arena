@@ -16,11 +16,35 @@ Everything under the Unreleased section are planned features, but may not be gua
 	- arena_strgenerate
 		- Return a randomly generated ascii string of specified characters with specified length.
 
+### Changed
+
+- Update the unit tests to use the Unity test framework.
+
+## [1.3.1] - 2026-03-15
+
+### Added
+
 - Added new Makefile rules:
 	- install-local
-		- Similar to install, but only happens locally in the user directory without the need for sudo.
+		- Install the headers and libraries locally inside ~/.local.
+		- Does not require sudo permissions.
 	- uninstall-local
-		- Same reasons as above.
+		- Remove the locally installed headers and libraries.
+		- Does not require sudo permissions.
+- Added shell scripts to assist with installing and uninstalling the libraries.
+
+### Changed
+
+- Update README.md
+	- Noteworthy since it was missing important info.
+
+### Fixed
+
+- Renamed project name: arena -> libarena
+	- Apparently it's not optional to exclude the lib prefix, as it is needed for the linker flag
+	- But include directories will still retain their name.
+
+- Changed permissions of the .so file from 644 to 755
 
 ## [1.3.0] - 2026-03-11
 

@@ -1,12 +1,12 @@
 # Project Name
-PROJECT	:= arena
-VERSION	:= 1.3.0
+PROJECT	:= libarena
+VERSION	:= 1.3.1
 PREFIX	?= /usr/local
 
 # Directories
 SRCDIR	:= src
 OBJDIR	:= obj
-INCDIR	:= $(PREFIX)/include/$(PROJECT)
+INCDIR	:= $(PREFIX)/include/arena
 LIBDIR	:= $(PREFIX)/lib
 
 # Sources, Objects and Dependencies
@@ -59,7 +59,7 @@ help: ## Show all Makefile rules.
 	@grep -h '\s##\s' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf ""$(CYAN)"  %-20s"$(RESET)" %s\n", $$1, $$2}'
 
 .PHONY: all
-all: $(STATIC_LIB) $(SHARED_LIB) ## Compile the library to create a static libary arena.a and a shared object arena.so.X.X.X file.
+all: $(STATIC_LIB) $(SHARED_LIB) ## Compile the library to create a static/shared libary file.
 
 $(STATIC_LIB): $(OBJS) Makefile
 	@$(AR) $(ARFLAGS) $(STATIC_LIB) $(OBJS)
@@ -75,7 +75,7 @@ $(OBJDIR):
 HEADERS := $(wildcard include/$(PROJECT)/*.h) $(wildcard include/*.h)
 
 .PHONY: install
-install: ## Copy the headers and libraries to their respective directories inside /usr/local (or similar). May require sudo permissions.
+install: ## Install the headers and libraries system-wide. May require sudo permissions.
 	@echo $(YELLOW)Installing $(PROJECT) in $(PREFIX)$(RESET)
 	@echo $(GREEN)Creating $(DESTDIR)$(INCDIR) and $(DESTDIR)$(LIBDIR)$(RESET)
 	@mkdir -p $(DESTDIR)$(INCDIR) $(DESTDIR)$(LIBDIR)
@@ -85,31 +85,97 @@ install: ## Copy the headers and libraries to their respective directories insid
 	@echo $(BLUE)Installing $(STATIC_LIB) in $(DESTDIR)$(LIBDIR)$(RESET)
 	@install -m 644 $(STATIC_LIB) $(DESTDIR)$(LIBDIR)
 	@echo $(BLUE)Installing $(SHARED_LIB) in $(DESTDIR)$(LIBDIR)$(RESET)
-	@install -m 644 $(SHARED_LIB) $(DESTDIR)$(LIBDIR)
+	@install -m 755 $(SHARED_LIB) $(DESTDIR)$(LIBDIR)
+
 	@echo $(PURPLE)Linking $(SHARED_LIB) with $(PROJECT).so$(RESET)
 	@echo $(PURPLE)Linking $(SHARED_LIB) with $(PROJECT).so.$(SO_MAJOR)$(RESET)
 	@cd $(DESTDIR)$(LIBDIR) && \
 		ln -sf $(SHARED_LIB) $(PROJECT).so && \
 		ln -sf $(SHARED_LIB) $(PROJECT).so.$(SO_MAJOR)
 
+	@ldconfig
 	@echo $(GREEN)Installation complete$(RESET)
 
 .PHONY: uninstall
-uninstall: ## Remove the headers and libraries copied from the installment. May require sudo permissions.
+uninstall: ## Remove the system-wide installed headers and libraries. May require sudo permissions.
 	@echo $(BRIGHT_RED)Removing $(PROJECT) from $(PREFIX)$(RESET)
 	@rm -f $(DESTDIR)$(INCDIR)/*.h
 	@echo $(BRIGHT_RED)Removing $(DESTDIR)$(INCDIR)$(RESET) \(if empty\)
 	@rmdir --ignore-fail-on-non-empty $(DESTDIR)$(INCDIR)
+
 	@echo $(BRIGHT_RED)Removing $(DESTDIR)$(LIBDIR)/$(STATIC_LIB)$(RESET)
 	@rm -f $(DESTDIR)$(LIBDIR)/$(STATIC_LIB)
 	@echo $(BRIGHT_RED)Removing $(DESTDIR)$(LIBDIR)/$(SHARED_LIB)$(RESET)
 	@rm -f $(DESTDIR)$(LIBDIR)/$(SHARED_LIB)
+
 	@echo $(BRIGHT_RED)Removing $(DESTDIR)$(LIBDIR)/$(PROJECT).so$(RESET)
 	@rm -f $(DESTDIR)$(LIBDIR)/$(PROJECT).so
 	@echo $(BRIGHT_RED)Removing $(DESTDIR)$(LIBDIR)/$(PROJECT).so.$(SO_MAJOR)$(RESET)
 	@rm -f $(DESTDIR)$(LIBDIR)/$(PROJECT).so.$(SO_MAJOR)
+
 	@echo $(BRIGHT_RED)Removing $(DESTDIR)$(LIBDIR)$(RESET) \(if empty\)
 	@rmdir --ignore-fail-on-non-empty $(DESTDIR)$(LIBDIR)
+
+	@echo $(YELLOW)Uninstallation complete${RESET}
+
+INSTALL_SCRIPT		:= install.sh
+UNINSTALL_SCRIPT	:= uninstall.sh
+LOCAL_DIR			:= $(HOME)/.local
+INCDIR_LOCAL		:= $(LOCAL_DIR)/include/arena
+LIBDIR_LOCAL		:= $(LOCAL_DIR)/lib
+
+.PHONY: install-local
+install-local: ## Install the headers and libraries locally inside ~/.local.
+	@echo $(YELLOW)Installing $(PROJECT) in $(LOCAL_DIR)$(RESET)
+
+	@echo $(GREEN)Creating $(INCDIR_LOCAL) and $(LIBDIR_LOCAL)$(RESET)
+	@mkdir -p $(INCDIR_LOCAL) $(LIBDIR_LOCAL)
+
+	@echo Running $(WHITE)$(INSTALL_SCRIPT)$(RESET)
+	@./$(INSTALL_SCRIPT)
+
+	@echo $(BLUE)Installing $(HEADERS) in $(INCDIR_LOCAL)$(RESET)
+	@install -m 644 $(HEADERS) $(INCDIR_LOCAL)
+	@echo $(BLUE)Installing $(STATIC_LIB) in $(LIBDIR_LOCAL)$(RESET)
+	@install -m 644 $(STATIC_LIB) $(LIBDIR_LOCAL)
+	@echo $(BLUE)Installing $(SHARED_LIB) in $(LIBDIR_LOCAL)$(RESET)
+	@install -m 755 $(SHARED_LIB) $(LIBDIR_LOCAL)
+
+	@echo $(PURPLE)Linking $(SHARED_LIB) with $(PROJECT).so$(RESET)
+	@echo $(PURPLE)Linking $(SHARED_LIB) with $(PROJECT).so.$(SO_MAJOR)$(RESET)
+	@cd $(LIBDIR_LOCAL) && \
+		ln -sf $(SHARED_LIB) $(PROJECT).so && \
+		ln -sf $(SHARED_LIB) $(PROJECT).so.$(SO_MAJOR)
+
+	@echo $(GREEN)Local installation complete$(RESET)
+	@echo Run \'$(BRIGHT_BLUE). \~/.profile$(RESET)\' or restart your terminal to apply changes
+
+.PHONY: uninstall-local
+uninstall-local: ## Remove the locally installed headers and libraries.
+	@echo $(BRIGHT_RED)Removing $(PROJECT) from $(LOCAL_DIR)$(RESET)
+	@rm -f $(INCDIR_LOCAL)/*.h
+
+	@echo Running $(WHITE)$(UNINSTALL_SCRIPT)$(RESET)
+	@./$(UNINSTALL_SCRIPT)
+
+	@echo $(BRIGHT_RED)Removing $(INCDIR_LOCAL)$(RESET) \(if empty\)
+	@rmdir --ignore-fail-on-non-empty $(INCDIR_LOCAL)
+
+	@echo $(BRIGHT_RED)Removing $(LIBDIR_LOCAL)/$(STATIC_LIB)$(RESET)
+	@rm -f $(LIBDIR_LOCAL)/$(STATIC_LIB)
+	@echo $(BRIGHT_RED)Removing $(LIBDIR_LOCAL)/$(SHARED_LIB)$(RESET)
+	@rm -f $(LIBDIR_LOCAL)/$(SHARED_LIB)
+
+	@echo $(BRIGHT_RED)Removing $(LIBDIR_LOCAL)/$(PROJECT).so$(RESET)
+	@rm -f $(LIBDIR_LOCAL)/$(PROJECT).so
+	@echo $(BRIGHT_RED)Removing $(LIBDIR_LOCAL)/$(PROJECT).so.$(SO_MAJOR)$(RESET)
+	@rm -f $(LIBDIR_LOCAL)/$(PROJECT).so.$(SO_MAJOR)
+
+	@echo $(BRIGHT_RED)Removing $(LIBDIR_LOCAL)$(RESET) \(if empty\)
+	@rmdir --ignore-fail-on-non-empty $(LIBDIR_LOCAL)
+
+	@echo $(YELLOW)Local uninstallation complete$(RESET)
+	@echo Restart your terminal to apply changes
 
 .PHONY: clean
 clean: ## Remove all object and dependency files, but keep the static library and shared object library.

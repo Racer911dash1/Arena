@@ -6,29 +6,27 @@ Arena is a C library for streamlining memory allocation while minimizing acciden
 
 ## Installation
 
-Here's the bare minimum amount of steps needed.
-```console
-$> git clone https://codeberg.org/Racer911-1/Arena.git
-$> cd Arena
-$> make all
-$> make install
+There's a few ways to install this library, but this is the first thing you want to do regardless of what path you pick.
+```sh
+git clone https://codeberg.org/Racer911-1/Arena.git
+cd Arena
+make all
+```
+When installing system-wide.
+```sh
+make install
+```
+When installing locally
+```sh
+make install-local
 ```
 
-This project uses Make to compile the library with the following rules.
+When compiling your project, use the linker flag -larena like so
+```sh
+cc main.c -larena
+```
 
-`make help`: Show all Makefile rules.
-
-`make all`: Compile the library to create a static libary `arena.a` and a shared object `arena.so.X.X.X` file.
-
-`make install`: Copy the headers and libraries to their respective directories inside /usr/local (or similar). May require sudo permissions.
-
-`make uninstall`: Remove the headers and libraries copied from the installment. May require sudo permissions.
-
-`make clean`: Remove all object and dependency files, but keep the static library and shared object library.
-
-`make fclean`: Remove all object and dependecy files, including the static library and shared object library.
-
-`make test`: Run unit tests for all functions.
+This project uses Make to compile the library, for more info on which rules are available, use `make help`.
 
 ## Usage
 
@@ -59,19 +57,14 @@ You can learn more about the available functions in the wiki section.
 ## Uninstalling
 
 Go to the directory where you've cloned this repository and run.
-```console
-$> make uninstall
+```sh
+make uninstall
 ```
-If successful the output should look like this
-```console
-Removing arena from /usr/local
-Removing /usr/local/include/arena (if empty)
-Removing /usr/local/lib/arena.a
-Removing /usr/local/lib/arena.so.1.0.0
-Removing /usr/local/lib/arena.so
-Removing /usr/local/lib/arena.so.1
-Removing /usr/local/lib (if empty)
+or
+```sh
+make uninstall-local
 ```
+depending on which installation you picked.
 
 ## Roadmap
 
