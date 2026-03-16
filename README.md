@@ -6,27 +6,21 @@ Arena is a C library for streamlining memory allocation while minimizing acciden
 
 ## Installation
 
-There's a few ways to install this library, but this is the first thing you want to do regardless of what path you pick.
+Clone the repository and enter
 ```sh
 git clone https://codeberg.org/Racer911-1/Arena.git
 cd Arena
 make all
 ```
-When installing system-wide.
-```sh
-make install
-```
-When installing locally
-```sh
-make install-local
-```
+When installing this library system-wide use `make install`.
 
-When compiling your project, use the linker flag -larena like so
+If you don't have sudo permissions or only want it for your login use `make install-local` instead.
+Make sure to restart your profile with `. ~/.profile` after installing it locally.
+
+To make use of the library in projects, you will need to provide the linker flag `-larena` when compiling the code.
 ```sh
 cc main.c -larena
 ```
-
-This project uses Make to compile the library, for more info on which rules are available, use `make help`.
 
 ## Usage
 
@@ -56,15 +50,7 @@ You can learn more about the available functions in the wiki section.
 
 ## Uninstalling
 
-Go to the directory where you've cloned this repository and run.
-```sh
-make uninstall
-```
-or
-```sh
-make uninstall-local
-```
-depending on which installation you picked.
+Go to the directory where you've cloned this repository and run. `make uninstall` or `make uninstall-local` depending on which installation type you picked.
 
 ## Roadmap
 

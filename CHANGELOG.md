@@ -20,6 +20,12 @@ Everything under the Unreleased section are planned features, but may not be gua
 
 - Update the unit tests to use the Unity test framework.
 
+## [1.3.2] - 2026-03-16
+
+### Changed
+
+- When running install or install-local, it will also compile the code if it wasn't done beforehand.
+
 ## [1.3.1] - 2026-03-15
 
 ### Added

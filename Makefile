@@ -1,6 +1,6 @@
 # Project Name
 PROJECT	:= libarena
-VERSION	:= 1.3.1
+VERSION	:= 1.3.2
 PREFIX	?= /usr/local
 
 # Directories
@@ -75,7 +75,7 @@ $(OBJDIR):
 HEADERS := $(wildcard include/$(PROJECT)/*.h) $(wildcard include/*.h)
 
 .PHONY: install
-install: ## Install the headers and libraries system-wide. May require sudo permissions.
+install: all ## Install the headers and libraries system-wide. May require sudo permissions.
 	@echo $(YELLOW)Installing $(PROJECT) in $(PREFIX)$(RESET)
 	@echo $(GREEN)Creating $(DESTDIR)$(INCDIR) and $(DESTDIR)$(LIBDIR)$(RESET)
 	@mkdir -p $(DESTDIR)$(INCDIR) $(DESTDIR)$(LIBDIR)
@@ -125,7 +125,7 @@ INCDIR_LOCAL		:= $(LOCAL_DIR)/include/arena
 LIBDIR_LOCAL		:= $(LOCAL_DIR)/lib
 
 .PHONY: install-local
-install-local: ## Install the headers and libraries locally inside ~/.local.
+install-local: all ## Install the headers and libraries locally inside ~/.local.
 	@echo $(YELLOW)Installing $(PROJECT) in $(LOCAL_DIR)$(RESET)
 
 	@echo $(GREEN)Creating $(INCDIR_LOCAL) and $(LIBDIR_LOCAL)$(RESET)
@@ -148,7 +148,7 @@ install-local: ## Install the headers and libraries locally inside ~/.local.
 		ln -sf $(SHARED_LIB) $(PROJECT).so.$(SO_MAJOR)
 
 	@echo $(GREEN)Local installation complete$(RESET)
-	@echo Run \'$(BRIGHT_BLUE). \~/.profile$(RESET)\' or restart your terminal to apply changes
+	@echo Run \'$(BRIGHT_BLUE). \~/.profile$(RESET)\' to apply changes.
 
 .PHONY: uninstall-local
 uninstall-local: ## Remove the locally installed headers and libraries.
@@ -175,7 +175,6 @@ uninstall-local: ## Remove the locally installed headers and libraries.
 	@rmdir --ignore-fail-on-non-empty $(LIBDIR_LOCAL)
 
 	@echo $(YELLOW)Local uninstallation complete$(RESET)
-	@echo Restart your terminal to apply changes
 
 .PHONY: clean
 clean: ## Remove all object and dependency files, but keep the static library and shared object library.
